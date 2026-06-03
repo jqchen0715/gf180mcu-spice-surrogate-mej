@@ -1,0 +1,33 @@
+{
+  "metrics": [
+    {
+      "target": "delay_avg_ns",
+      "model": "GradientBoosting",
+      "test_rows": 64,
+      "r2": 0.8707504904666867,
+      "mae": 0.048273806202344144,
+      "rmse": 0.09497001867055922,
+      "mape_pct": 17.91766088088067
+    },
+    {
+      "target": "power_avg_uW",
+      "model": "GradientBoosting",
+      "test_rows": 64,
+      "r2": 0.9696289115194301,
+      "mae": 0.43721604107146705,
+      "rmse": 0.5775903847612706,
+      "mape_pct": 8.697004572671519
+    }
+  ],
+  "pareto_summary": {
+    "predicted_front_size": 4.0,
+    "actual_front_size": 1.0,
+    "selected_candidates": 12.0,
+    "selected_actual_pareto_hits": 1.0,
+    "selected_actual_pareto_hit_rate": 0.08333333333333333,
+    "selected_actual_top10pct_hits": 7.0,
+    "selected_actual_top20pct_hits": 11.0,
+    "selected_median_actual_composite_rank": 6.5,
+    "front_overlap_rate": 1.0
+  }
+}

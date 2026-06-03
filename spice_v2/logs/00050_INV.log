@@ -1,0 +1,41 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: INV seed characterization sample 50
+
+Doing analysis at TEMP = -9.972810 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                     1.6524
+in                                           0
+out                                     1.6524
+vin#branch                                   0
+vdd#branch                        -2.33784e-12
+
+ Reference value :  5.30718e-08
+No. of Data Rows : 60041
+
+  Measurements for Transient Analysis
+
+tphl                =  1.80967e-10 targ=  2.37438e-09 trig=  2.19341e-09
+tplh                =  2.51655e-10 targ=  2.28319e-08 trig=  2.25802e-08
+i_vdd_avg           =  -4.14755e-06 from=  5.00000e-09 to=  1.10001e-07
+power_avg_uw        =  6.85341e+00
+
+
+Total analysis time (seconds) = 0.3589
+
+Total elapsed time (seconds) = 0.444 
+
+Total DRAM available = 16384.000 MB.
+DRAM currently available =  356.266 MB.
+Maximum ngspice program size =   13.281 MB.
+Current ngspice program size =   13.125 MB.
+
