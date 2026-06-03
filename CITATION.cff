@@ -8,6 +8,8 @@ authors:
     given-names: "Feng"
 version: "0.1.0"
 date-released: "2026-06-03"
+doi: "10.5281/zenodo.20524583"
+repository-code: "https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej"
 abstract: "Data, scripts, result summaries, figures, and provenance notes supporting a source-aware SPICE-grounded workflow for sample-efficient GF180MCU standard-cell exploration."
 keywords:
   - GF180MCU

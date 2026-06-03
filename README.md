@@ -118,5 +118,14 @@ rows, and 160 `typical` rows, with 40 rows per cell-corner pair.
 
 ## Citation
 
-Please cite this repository using the metadata in `CITATION.cff`. If a Zenodo
-DOI is created for an archival snapshot, cite the DOI-bearing release.
+Please cite the archived Zenodo release:
+
+```text
+https://doi.org/10.5281/zenodo.20524583
+```
+
+The live GitHub repository is:
+
+```text
+https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej
+```

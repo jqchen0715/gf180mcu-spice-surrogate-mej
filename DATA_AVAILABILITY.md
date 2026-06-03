@@ -2,7 +2,18 @@
 
 The primary SPICE dataset, validation SPICE dataset, SPICE-generation scripts,
 experiment scripts, generated result summaries, figure-generation scripts, and
-SPICE netlists/logs supporting the manuscript are available in this repository.
+SPICE netlists/logs supporting the manuscript are available in the archived
+Zenodo repository:
+
+```text
+https://doi.org/10.5281/zenodo.20524583
+```
+
+The live GitHub repository is:
+
+```text
+https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej
+```
 
 The repository includes:
 
