@@ -1,10 +1,10 @@
 # GF180MCU SPICE Surrogate Reproducibility Package
 
 This repository contains the data, scripts, result summaries, generated figures,
-and provenance notes supporting the Microelectronics Journal manuscript:
+and provenance notes supporting the revised SCI manuscript:
 
-**A Source-Aware SPICE-Grounded Workflow for Sample-Efficient GF180MCU
-Standard-Cell Exploration**
+**SPICE-Efficient Candidate Screening and Corner-Support Calibration for
+GF180MCU Standard-Cell Exploration**
 
 The study targets early design-space exploration for controlled transistor-level
 standard-cell topologies in GF180MCU using ngspice. It is not a sign-off flow,
@@ -19,6 +19,7 @@ data/
   dataset_v3_spice_480.csv       Independent validation dataset
 
 experiments/
+  sci_revision_enhanced_evaluation.py
   v2_baseline_transfer.py
   source_aware_ablation.py
   v2_active_learning.py
@@ -35,9 +36,15 @@ results/
   v2_robustness/
   v3_robustness/
   v3_scale_validation/
+  sci_revision/
 
 manuscript/figures/
   Figure PDFs and PNGs used in the manuscript
+
+manuscript/
+  sci_resubmission_rebuilt.tex
+  sci_resubmission_rebuilt.pdf
+  microelectronics_journal_references.bib
 
 spice_v2/
   generate_spice_dataset.py
@@ -76,6 +83,7 @@ Run the publication-facing checks and experiments from the repository root:
 
 ```bash
 python tools/check_manuscript_numbers.py
+python experiments/sci_revision_enhanced_evaluation.py
 python experiments/v2_robustness_ablation.py
 python experiments/v3_scale_and_corner_support.py
 ```
@@ -123,6 +131,11 @@ Please cite the archived Zenodo release:
 ```text
 https://doi.org/10.5281/zenodo.20524583
 ```
+
+Note: the SCI-revision experiments in `results/sci_revision/` were added after
+the first archived package. Before manuscript resubmission, create a new GitHub
+release and archive a new Zenodo version so the DOI package includes these
+added files.
 
 The live GitHub repository is:
 

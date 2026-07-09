@@ -15,6 +15,12 @@ The live GitHub repository is:
 https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej
 ```
 
+The revised SCI experiments add the `results/sci_revision/` directory and
+the scripts `experiments/sci_revision_enhanced_evaluation.py` and
+`experiments/plot_sci_revision_checks.py`. Before final manuscript
+resubmission, a new GitHub release should be archived on Zenodo so the
+repository DOI points to a package containing these files.
+
 The repository includes:
 
 - `data/dataset_v2_spice_320.csv`
@@ -27,6 +33,8 @@ The repository includes:
 - `experiments/`
 - `results/`
 - `manuscript/figures/`
+- `manuscript/sci_resubmission_rebuilt.tex`
+- `manuscript/sci_resubmission_rebuilt.pdf`
 - `manuscript_audits/`
 
 The GF180MCU PDK checkout is not redistributed. The manuscript cites the

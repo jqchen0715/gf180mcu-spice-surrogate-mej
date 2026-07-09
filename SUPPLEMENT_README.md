@@ -1,8 +1,8 @@
-# MEJ Reproducibility Supplement
+# SCI Reproducibility Supplement
 
 This archive supports the manuscript:
 
-A Source-Aware SPICE-Grounded Workflow for Sample-Efficient GF180MCU Standard-Cell Exploration
+SPICE-Efficient Candidate Screening and Corner-Support Calibration for GF180MCU Standard-Cell Exploration
 
 ## Contents
 
@@ -12,12 +12,14 @@ A Source-Aware SPICE-Grounded Workflow for Sample-Efficient GF180MCU Standard-Ce
 - `spice_v2/`: SPICE data-generation script and schema/status notes.
 - `experiments/`: experiment and plotting scripts for the manuscript results.
 - `results/`: publication-facing result tables, reports, and plots.
+- `results/sci_revision/`: enhanced SCI-revision baselines, statistical tests, ranking metrics, conformal intervals, feature importance, and runtime summaries.
 - `manuscript/figures/`: manuscript figure files in PDF and PNG formats.
+- `manuscript/sci_resubmission_rebuilt.tex` and `.pdf`: rebuilt manuscript draft.
 - `README.md` and `REPRODUCIBILITY.md`: repository overview and reproduction notes.
 
 ## Exclusions
 
-This archive intentionally excludes the local virtual environment, the GF180MCU PDK checkout, debug datasets, generated ngspice logs/netlists, and legacy exploratory evidence files. Users should obtain GF180MCU PDK files from the official source if they want to regenerate SPICE data.
+This archive intentionally excludes the local virtual environment, the GF180MCU PDK checkout, debug datasets, and legacy exploratory evidence files. Publication-facing generated ngspice netlists and logs are retained as provenance records. Users should obtain GF180MCU PDK files from the official source if they want to regenerate SPICE data.
 
 ## Scope
 

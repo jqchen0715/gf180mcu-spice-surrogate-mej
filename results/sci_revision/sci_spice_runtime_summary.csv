@@ -1,0 +1,11 @@
+dataset,rows,median_elapsed_s,p90_elapsed_s,total_elapsed_s,group,cell_type
+v2,320,0.602,1.0151,215.046,dataset,
+v3,480,0.7444999999999999,1.3403,401.322,dataset,
+v2,80,0.432,,35.433,dataset_cell,INV
+v2,80,0.608,,49.247,dataset_cell,NAND2
+v2,80,0.5954999999999999,,48.104,dataset_cell,NOR2
+v2,80,1.007,,82.262,dataset_cell,XOR2
+v3,120,0.426,,56.066,dataset_cell,INV
+v3,120,0.679,,88.719,dataset_cell,NAND2
+v3,120,0.7785,,93.751,dataset_cell,NOR2
+v3,120,1.305,,162.786,dataset_cell,XOR2

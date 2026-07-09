@@ -1,10 +1,10 @@
-# Reproducibility Notes for the Microelectronics Journal Submission
+# Reproducibility Notes for the Revised SCI Submission
 
-Updated: 2026-06-02
+Updated: 2026-07-09
 
 This document describes how to reproduce the publication-facing dataset, experiments, and figures for the manuscript:
 
-**A Source-Aware SPICE-Grounded Workflow for Sample-Efficient GF180MCU Standard-Cell Exploration**
+**SPICE-Efficient Candidate Screening and Corner-Support Calibration for GF180MCU Standard-Cell Exploration**
 
 The project is intended for early design-space exploration. It is not a sign-off flow, a production standard-cell library generator, or a full Liberty characterization package.
 
@@ -114,6 +114,36 @@ If the GF180MCU model file is installed elsewhere, pass the exact model path usi
 ## 3. Main Experiments
 
 Run commands from the project root.
+
+### 3.0 SCI-Revision Enhanced Evaluation
+
+```bash
+.venv/bin/python experiments/sci_revision_enhanced_evaluation.py
+.venv/bin/python experiments/plot_sci_revision_checks.py
+```
+
+Expected outputs:
+
+```text
+results/sci_revision/sci_model_zoo_repeated.csv
+results/sci_revision/sci_model_zoo_summary.csv
+results/sci_revision/sci_external_validation_all_models.csv
+results/sci_revision/sci_external_validation_all_models_summary.csv
+results/sci_revision/sci_friedman_tests.csv
+results/sci_revision/sci_wilcoxon_tests.csv
+results/sci_revision/sci_ranking_metrics.csv
+results/sci_revision/sci_ranking_metrics_summary.csv
+results/sci_revision/sci_conformal_intervals.csv
+results/sci_revision/sci_conformal_intervals_summary.csv
+results/sci_revision/sci_permutation_feature_importance.csv
+results/sci_revision/sci_spice_runtime_parsed.csv
+results/sci_revision/sci_spice_runtime_summary.csv
+results/sci_revision/sci_revision_enhanced_evaluation_report.md
+manuscript/figures/fig8_sci_revision_checks.png
+manuscript/figures/fig8_sci_revision_checks.pdf
+```
+
+This experiment adds GPR, XGBoost, LightGBM, and CatBoost baselines, primary-to-validation testing for all model families, Friedman and paired Wilcoxon tests, ranking metrics, split conformal intervals, permutation feature importance, and parsed ngspice runtime summaries.
 
 ### 3.1 Baselines and Cross-Cell Transfer
 
