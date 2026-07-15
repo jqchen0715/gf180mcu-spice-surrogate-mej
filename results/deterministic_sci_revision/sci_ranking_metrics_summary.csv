@@ -1,0 +1,3 @@
+experiment,median_spearman,median_kendall_tau,median_precision_at_k_top10,median_recall_at_k_top10,median_precision_at_k_top20,median_recall_at_k_top20,median_ndcg_at_k,median_median_actual_rank_selected
+v2_repeated_holdout,0.9785485347985347,0.8814484126984127,0.5384615384615384,1.0,0.9230769230769231,0.9230769230769231,0.9954456710287312,7.0
+v2_train_v3_validation,0.9875804582485167,0.9059672929714682,0.5,1.0,0.9479166666666666,0.9479166666666666,0.9984591175604641,48.5

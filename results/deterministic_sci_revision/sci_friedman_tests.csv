@@ -1,0 +1,3 @@
+target,models,friedman_stat,friedman_p,best_avg_rank_model,best_avg_rank
+delay_avg_ns,"CatBoost, ExtraTrees, GaussianProcess, GradientBoosting, HistGradientBoosting, LightGBM, MLP, RandomForest, Ridge, SVR_RBF, XGBoost",153.87272727272727,5.944938300813038e-28,CatBoost,2.1
+power_avg_uW,"CatBoost, ExtraTrees, GaussianProcess, GradientBoosting, HistGradientBoosting, LightGBM, MLP, RandomForest, Ridge, SVR_RBF, XGBoost",164.63636363636363,3.571059270760512e-30,GaussianProcess,1.0

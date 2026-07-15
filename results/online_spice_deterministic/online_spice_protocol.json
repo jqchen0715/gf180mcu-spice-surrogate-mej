@@ -1,0 +1,32 @@
+{
+  "protocol": "simulator_in_the_loop_unseen_corner_support",
+  "primary_rows": 320,
+  "validation_rows": 480,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "heldout_corners": [
+    "ff",
+    "ss",
+    "typical"
+  ],
+  "strategies": [
+    "random",
+    "cell_balanced_random",
+    "space_filling",
+    "uncertainty",
+    "cell_balanced_space_filling"
+  ],
+  "candidate_per_cell": 24,
+  "batch_size": 4,
+  "max_support": 48,
+  "uncertainty_weight": 0.0,
+  "diversity_weight": 1.0,
+  "delay_r2_threshold": 0.75,
+  "ranking_recall_threshold": 0.9,
+  "validation_use": "evaluation_only_not_acquisition"
+}

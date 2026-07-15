@@ -1,0 +1,5 @@
+- A validation-blind ngspice loop evaluates three unseen process corners.
+- Explicit GF180MCU switch control makes repeated SPICE queries deterministic.
+- Forty-eight of 96 queries retain a median delay-R2 gap of only 0.012.
+- The 48-query budget reduces measured simulation time by 51.3%.
+- Uncertainty-only sampling is less reliable than balanced space coverage here.

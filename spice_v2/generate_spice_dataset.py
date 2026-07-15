@@ -69,6 +69,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--vdd-min", type=float, default=1.62, help="Minimum supply voltage in volts.")
     parser.add_argument("--vdd-max", type=float, default=1.98, help="Maximum supply voltage in volts.")
     parser.add_argument("--seed", type=int, default=20260530)
+    parser.add_argument(
+        "--statistical-mode",
+        choices=["off", "global", "mismatch", "both"],
+        default="off",
+        help=(
+            "GF180MCU statistical switches. Publication corner-characterization rows "
+            "default to 'off'; use another mode only for an explicitly statistical study."
+        ),
+    )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument(
         "--netlist-dir",
@@ -233,6 +242,7 @@ def mos_models_block(
     nmos_model: str,
     pmos_model: str,
     corner: str,
+    statistical_mode: str = "off",
 ) -> str:
     if use_generic:
         return f"""
@@ -244,7 +254,19 @@ def mos_models_block(
         raise ValueError("A real model file is required unless --allow-generic-debug-models is used.")
     design_file = model_file.parent / "design.ngspice"
     design_include = f'.include "{design_file}"\n' if design_file.exists() else ""
-    return f'{design_include}.lib "{model_file}" {corner}\n'
+    switches = {
+        "off": (0, 0),
+        "global": (1, 0),
+        "mismatch": (0, 1),
+        "both": (1, 1),
+    }
+    if statistical_mode not in switches:
+        raise ValueError(f"Unsupported statistical mode: {statistical_mode}")
+    sw_global, sw_mismatch = switches[statistical_mode]
+    switch_block = (
+        f".param sw_stat_global={sw_global} sw_stat_mismatch={sw_mismatch}\n"
+    )
+    return f'{design_include}{switch_block}.lib "{model_file}" {corner}\n'
 
 
 def cell_devices(sample: Sample, nmos_model: str, pmos_model: str, use_subckt_models: bool) -> str:
@@ -320,7 +342,7 @@ def write_netlist(
 .title {sample.cell_type} seed characterization sample {sample.sample_id}
 .option method=gear reltol=1e-4 abstol=1e-12 vntol=1e-6
 .temp {sample.temp:.6g}
-{mos_models_block(model_file, args.allow_generic_debug_models, args.nmos_model, args.pmos_model, sample.corner)}
+{mos_models_block(model_file, args.allow_generic_debug_models, args.nmos_model, args.pmos_model, sample.corner, getattr(args, "statistical_mode", "off"))}
 VDD vdd 0 {sample.vdd:.6g}
 Vin in 0 PULSE(0 {sample.vdd:.6g} {pulse_delay:.6e} {trise:.6e} {tfall:.6e} {pulse_width:.6e} {pulse_period:.6e})
 {fixed_inputs}{cell_devices(sample, args.nmos_model, args.pmos_model, not args.allow_generic_debug_models)}
@@ -389,6 +411,14 @@ def result_row(
         delay_avg = (tphl + tplh) / 2 * 1e9
 
     fidelity = "GenericDebug_NotForPublication" if args.allow_generic_debug_models else "SPICE_GF180MCU"
+    statistical_mode = getattr(args, "statistical_mode", "off")
+    switch_values = {
+        "off": (0, 0),
+        "global": (1, 0),
+        "mismatch": (0, 1),
+        "both": (1, 1),
+    }
+    sw_global, sw_mismatch = switch_values[statistical_mode]
     status = "dry_run" if args.dry_run else "ok"
     if returncode not in (None, 0):
         status = "ngspice_failed"
@@ -416,6 +446,10 @@ def result_row(
         "model_file": "" if model_file is None else str(model_file),
         "nmos_model": args.nmos_model,
         "pmos_model": args.pmos_model,
+        "statistical_mode": statistical_mode,
+        "sw_stat_global": sw_global,
+        "sw_stat_mismatch": sw_mismatch,
+        "sampling_seed": getattr(args, "seed", ""),
         "fidelity": fidelity,
         "status": status,
         "netlist_path": project_path(netlist_path),

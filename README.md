@@ -1,24 +1,62 @@
 # GF180MCU SPICE Surrogate Reproducibility Package
 
 This repository contains the data, scripts, result summaries, generated figures,
-and provenance notes supporting the revised SCI manuscript:
+and provenance notes supporting the deterministic simulator-in-the-loop manuscript:
 
-**SPICE-Efficient Candidate Screening and Corner-Support Calibration for
-GF180MCU Standard-Cell Exploration**
+**A Deterministic Simulator-in-the-Loop Protocol for Sample-Efficient GF180MCU
+Standard-Cell Corner Calibration**
 
 The study targets early design-space exploration for controlled transistor-level
 standard-cell topologies in GF180MCU using ngspice. It is not a sign-off flow,
 not a production standard-cell library generator, and not a full Liberty
 characterization package.
 
+## Current Main Evidence
+
+The current study uses deterministic datasets with the GF180MCU global and
+mismatch statistical switches explicitly disabled:
+
+```text
+data/dataset_primary_deterministic_320.csv
+data/dataset_validation_deterministic_480.csv
+```
+
+The main simulator-in-the-loop outputs are under:
+
+```text
+results/online_spice_deterministic/
+```
+
+They contain 3600 successful online ngspice query records, validation-blind
+budget trajectories, paired tests, repeated-query consistency checks, and 15
+measured 96-point exhaustive references. The GitHub repository retains the
+structured query and result records. The next Zenodo release should additionally
+include the per-query netlists and logs listed in
+`DETERMINISTIC_ONLINE_REPRODUCIBILITY.md`.
+
+The current manuscript and numeric audit are:
+
+```text
+manuscript/mej_deterministic_online_submission.tex
+manuscript/mej_deterministic_online_submission.pdf
+manuscript_audits/mej_deterministic_online_numeric_audit.md
+```
+
 ## Contents
 
 ```text
 data/
+  dataset_primary_deterministic_320.csv
+  dataset_validation_deterministic_480.csv
   dataset_v2_spice_320.csv       Primary GF180MCU/ngspice dataset
   dataset_v3_spice_480.csv       Independent validation dataset
 
 experiments/
+  online_spice_corner_calibration.py
+  complete_online_exhaustive_reference.py
+  replay_online_prequential_diagnostics.py
+  tune_corner_acquisition_weight.py
+  plot_deterministic_online_results.py
   sci_revision_enhanced_evaluation.py
   v2_baseline_transfer.py
   source_aware_ablation.py
@@ -29,6 +67,10 @@ experiments/
   plot_*.py
 
 results/
+  online_spice_deterministic/
+  deterministic_sci_revision/
+  deterministic_v3_scale_validation/
+  deterministic_robustness/
   source_aware/
   v2/
   v2_active_learning/
@@ -42,6 +84,8 @@ manuscript/figures/
   Figure PDFs and PNGs used in the manuscript
 
 manuscript/
+  mej_deterministic_online_submission.tex
+  mej_deterministic_online_submission.pdf
   sci_resubmission_rebuilt.tex
   sci_resubmission_rebuilt.pdf
   microelectronics_journal_references.bib
@@ -56,6 +100,7 @@ spice_v2/
   logs_v3_480/
 
 tools/
+  audit_deterministic_online_manuscript.py
   check_manuscript_numbers.py
 
 manuscript_audits/
@@ -79,43 +124,23 @@ python3 -m venv .venv
 pip install -r requirements.txt
 ```
 
-Run the publication-facing checks and experiments from the repository root:
+Run the current publication-facing numeric audit from the repository root:
 
 ```bash
-python tools/check_manuscript_numbers.py
-python experiments/sci_revision_enhanced_evaluation.py
-python experiments/v2_robustness_ablation.py
-python experiments/v3_scale_and_corner_support.py
+python tools/audit_deterministic_online_manuscript.py
 ```
 
-For the full reproduction workflow, see:
+For the deterministic data-generation and simulator-in-the-loop commands, see:
 
 ```text
-REPRODUCIBILITY.md
+DETERMINISTIC_ONLINE_REPRODUCIBILITY.md
 ```
 
-## Main Datasets
+## Legacy Package Note
 
-The V2 primary dataset contains 320 successful GF180MCU/ngspice rows:
-
-| Cell | Rows |
-|---|---:|
-| INV | 80 |
-| NAND2 | 80 |
-| NOR2 | 80 |
-| XOR2 | 80 |
-
-The V3 validation dataset contains 480 successful GF180MCU/ngspice rows:
-
-| Cell | Rows |
-|---|---:|
-| INV | 120 |
-| NAND2 | 120 |
-| NOR2 | 120 |
-| XOR2 | 120 |
-
-The V3 dataset is balanced across process corners: 160 `ff` rows, 160 `ss`
-rows, and 160 `typical` rows, with 40 rows per cell-corner pair.
+Files retaining the `v2` and `v3` names belong to the preceding reproducibility
+package. They are kept for release history but are not the publication datasets
+for the deterministic online extension.
 
 ## Reuse and Licensing
 
@@ -132,10 +157,10 @@ Please cite the archived Zenodo release:
 https://doi.org/10.5281/zenodo.20524583
 ```
 
-Note: the SCI-revision experiments in `results/sci_revision/` were added after
-the first archived package. Before manuscript resubmission, create a new GitHub
-release and archive a new Zenodo version so the DOI package includes these
-added files.
+The DOI above identifies the preceding archived package. Before submitting the
+deterministic online manuscript, create a new GitHub release and a new Zenodo
+version containing the files listed in
+`DETERMINISTIC_ONLINE_REPRODUCIBILITY.md`.
 
 The live GitHub repository is:
 

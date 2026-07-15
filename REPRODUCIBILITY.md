@@ -1,5 +1,10 @@
 # Reproducibility Notes for the Revised SCI Submission
 
+> **Superseded for the current manuscript.** This file documents the preceding
+> static-table study and is retained for release history. Use
+> `DETERMINISTIC_ONLINE_REPRODUCIBILITY.md` for the current deterministic
+> simulator-in-the-loop study.
+
 Updated: 2026-07-09
 
 This document describes how to reproduce the publication-facing dataset, experiments, and figures for the manuscript:

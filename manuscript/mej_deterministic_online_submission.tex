@@ -1,0 +1,295 @@
+\documentclass[preprint,12pt]{elsarticle}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\journal{Microelectronics Journal}
+\biboptions{numbers,sort&compress}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{A Deterministic Simulator-in-the-Loop Protocol for Sample-Efficient GF180MCU Standard-Cell Corner Calibration}
+
+\author[aff1]{Jiaqing Chen\corref{cor1}}
+\ead{Jq\_Chen0715@buaa.edu.cn}
+
+\author[aff1]{Feng Shao}
+\cortext[cor1]{Corresponding author.}
+
+\affiliation[aff1]{
+organization={School of Integrated Circuit Science and Engineering, Beihang University},
+addressline={No. 37 Xueyuan Road, Haidian District},
+city={Beijing},
+postcode={100191},
+country={China}}
+
+\begin{abstract}
+Surrogate models can interpolate standard-cell simulation data, but an offline regression benchmark does not establish that they reduce new SPICE work. This paper instead studies unseen-process-corner calibration through a deterministic simulator-in-the-loop protocol. GF180MCU statistical-variation switches are explicitly disabled, and two independently sampled ngspice datasets provide 320 primary rows and 480 evaluation-only validation rows for controlled INV, NAND2, NOR2, and XOR2 arcs. For each of five random seeds and three held-out corners, five acquisition strategies query fresh SPICE labels from a 96-candidate feature-only pool in four-point batches. A cell-balanced space-filling policy improves median independent-validation delay $R^2$ from 0.4825 without same-corner support to 0.8119 with 24 queries and 0.8729 with 48 queries. Completing all 96 candidates gives a median $R^2$ of 0.8824. Thus, 48 queries retain a median gap of 0.0120 to the measured exhaustive reference while reducing SPICE calls by 50\% and measured simulation time by 51.3\%. At this budget, the policy exceeds random acquisition after Holm correction ($p=0.0374$), but is statistically indistinguishable from ordinary space filling; uncertainty-only acquisition is less reliable. Repeated simulations of 1118 candidate groups are numerically identical after the configuration fix. The contribution is therefore an auditable simulation-allocation protocol and evidence package, not a new learning architecture or a replacement for layout-extracted sign-off and complete Liberty characterization.
+\end{abstract}
+
+\begin{keyword}
+standard cells \sep GF180MCU \sep SPICE simulation \sep sequential design \sep process-corner calibration \sep surrogate modeling \sep reproducibility
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}
+
+Transistor-level simulation remains the reference for evaluating standard-cell delay and power because these quantities depend jointly on transistor sizing, topology, process corner, voltage, temperature, load capacitance, and input transition time. Even before complete library characterization, a designer may need to explore many combinations to decide which regions deserve a denser sweep. The practical question is therefore not only whether a regression model fits previously generated rows, but whether it can allocate a limited budget of new SPICE simulations without hiding extrapolation failures.
+
+Learning-assisted circuit design has been studied in analog, mixed-signal, and standard-cell settings \cite{Fayazi_AI_AMS_Review_2021,Afacan_ML_AnalogRF_Review_2021,Mina_ML_AnalogIC_Review_2022,Klemme_CellLib_ML_DTCO_ICCAD_2020,Klemme_Reliability_CellLib_TCASI_2021}. Bayesian and multi-fidelity methods have further shown that a simulator budget can be treated as part of the optimization problem rather than as a fixed data-collection cost \cite{Lyu_Bayesian_Analog_2018,Zhang_MultiFidelity_BO_DAC_2019,He_Batched_MultiFidelity_BO_TCAD_2023}. However, three gaps remain important for a small open-PDK study. First, a random split of a static table mainly measures interpolation. Second, pool-based replay does not prove that selected points were actually simulated during acquisition. Third, PDK control parameters can silently change the statistical meaning of the generated data.
+
+The third issue is concrete in the GF180MCU flow used here. The included design configuration enables global and mismatch statistical switches by default. If these switches are not overridden, two nominally identical netlists can produce different values while the resulting table is described as a deterministic PVT study. That behavior may be appropriate for variation analysis, but it confounds a corner-calibration experiment unless random draws and seeds are modeled explicitly. We therefore force both switches off and retain the configuration, model path, netlist, and simulator log for every row.
+
+This paper reframes the study around a genuine simulator-in-the-loop task: a process corner is absent from the base training set; acquisition sees only the features of 96 new candidates; selected points are submitted to ngspice; and an independent validation set is used only after each update. The same 96-candidate pool is eventually completed to provide a measured exhaustive reference. This design supports four contributions:
+
+\begin{enumerate}
+\item a deterministic GF180MCU/ngspice generation protocol that makes the statistical-mode setting explicit and auditable;
+\item a validation-blind unseen-corner support loop with fresh SPICE calls, retained netlists and logs, five acquisition baselines, five seeds, and three held-out corners;
+\item a direct comparison between 24- and 48-query budgets and a measured 96-query reference, including query and wall-time savings; and
+\item a negative result showing that uncertainty-only acquisition can be unstable, whereas explicit space coverage and cell balance provide a dependable engineering default in this setting.
+\end{enumerate}
+
+The method is deliberately bounded. It targets early transistor-level exploration of four controlled combinational-cell arcs. It does not replace sign-off simulation, layout-parasitic extraction, all timing arcs, leakage-state characterization, or complete Liberty generation.
+
+\section{Related work and study position}
+
+Machine-learning surrogates are widely used for expensive circuit-response prediction and design-space search \cite{Fayazi_AI_AMS_Review_2021,Afacan_ML_AnalogRF_Review_2021,Mina_ML_AnalogIC_Review_2022}. In standard-cell characterization, prior work has addressed library modeling, design-technology co-optimization, reliability, knowledge transfer, and graph representations \cite{Klemme_CellLib_ML_DTCO_ICCAD_2020,Klemme_Reliability_CellLib_TCASI_2021,Tang_KnowledgeTransfer_CellLib_MEJO_2025,Ma_GNN_CellLib_Integration_2025}. Those studies motivate learning-assisted characterization, but often pursue broader cell-library coverage or more advanced representations than the controlled tabular experiment reported here.
+
+Sequential design and active learning choose the next expensive label using the current model or the geometry of the unlabeled pool \cite{Settles_ActiveLearning_2009}. In circuit optimization, Bayesian and multi-fidelity methods commonly combine prediction uncertainty, expected improvement, or fidelity-aware cost \cite{Lyu_Bayesian_Analog_2018,Zhang_MultiFidelity_BO_DAC_2019,He_Batched_MultiFidelity_BO_TCAD_2023}. Our purpose is narrower. We do not claim a new acquisition theory. We test whether a simple policy can be executed as an auditable SPICE loop and how much measured work it saves relative to completing the same candidate pool.
+
+This distinction matters for journal positioning. Model-zoo results are retained only as a same-flow sanity check. The main unit of evidence is a SPICE query, not a row revealed retrospectively from a labeled table. The main comparison is against a measured exhaustive candidate set, not only against another regressor on a random split.
+
+\section{Deterministic SPICE protocol}
+
+\subsection{PDK, simulator, and statistical-mode control}
+
+All publication-eligible simulations use ngspice 46 and the GF180MCU primitive-device model file \texttt{sm141064.ngspice} \cite{Google_GF180MCU_PDK_GitHub,GF180MCU_ReadTheDocs_CustomDesign,GF180MCU_Model_sm141064,Ngspice_Manual}. The local PDK checkout corresponds to commit \texttt{de3240d}; the full hash is given in the repository reference. The NMOS and PMOS devices use the \texttt{nmos\_3p3} and \texttt{pmos\_3p3} models.
+
+The GF180MCU design include enables both global and mismatch statistical switches by default. Each generated publication netlist therefore inserts
+
+\begin{verbatim}
+.param sw_stat_global=0 sw_stat_mismatch=0
+\end{verbatim}
+
+after the design include. This override defines the reported experiment as deterministic corner characterization rather than Monte Carlo variation analysis. The dataset records \texttt{statistical\_mode=off}, both switch values, the sampling seed, simulator version, model path, netlist path, log path, fidelity, and completion status.
+
+\subsection{Cells, variables, and measured targets}
+
+The templates cover controlled arcs for INV, NAND2, NOR2, and XOR2. NAND2 and NOR2 use tied-input transitions. XOR2 holds one input high while the other toggles. The experiment therefore studies controlled topology cases rather than every legal state and timing arc of a production cell library.
+
+The numerical inputs are NMOS width $W_n$, channel length $L$, PMOS/NMOS width ratio, supply voltage, temperature, load capacitance, and input slew. Cell type, input arc, and process corner are categorical inputs. The channel length is fixed at 0.28~$\mu$m. The targets are average propagation delay,
+\begin{equation}
+d=\frac{t_{\mathrm{PHL}}+t_{\mathrm{PLH}}}{2},
+\end{equation}
+and average switching supply power over the defined transient measurement window. Numerical features are standardized and categorical features are one-hot encoded with unknown-category-safe handling.
+
+\begin{table}[t]
+\centering
+\caption{Deterministic datasets and simulator-in-the-loop protocol.}
+\label{tab:protocol}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllll}
+\toprule
+Component & Size & Sampling role & Label access & Provenance \\
+\midrule
+Primary SPICE set & 320 rows; 80/cell & Base training and development & Available before online study & Netlist, log, model, switches \\
+Validation SPICE set & 480 rows; 120/cell & Independent budget evaluation & Never available to acquisition & Separate sampling seed/directories \\
+Online candidate pool & 96 points per seed-corner & Same-corner support search & Features only until selected & Fresh netlist and log per query \\
+Measured reference & 96 points per seed-corner & Exhaustive budget reference & Completed after online runs & One retained row per candidate \\
+\midrule
+Seeds and corners & \multicolumn{4}{l}{Five pool seeds; held-out ff, ss, and typical corners; four-query batches; maximum online budget 48} \\
+Variable ranges & \multicolumn{4}{l}{$W_n$: 0.517--4.990~$\mu$m; ratio: 1.503--2.999; $V_{DD}$: 1.620--1.980~V; temperature: $-20$--100~$^\circ$C; load: 1.066--99.832~fF; slew: 10.672--499.454~ps} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{Independent datasets}
+
+The primary dataset contains 320 successful rows generated with Latin hypercube seed 20260530. Each cell contributes 80 rows. The corner counts are 104 ff, 108 ss, and 108 typical rows. The independent validation dataset contains 480 successful rows generated with seed 20260602, with 120 rows per cell and 160 rows per corner. No legacy or externally sourced table is included in the reported training, support, or evaluation sets.
+
+The independent validation set is not cross-PDK or cross-simulator validation. Both datasets use the same PDK, simulator, device models, and circuit templates. Independence here means a different design-point sample, sampling seed, netlist directory, and log directory within the same controlled flow.
+
+\section{Simulator-in-the-loop corner calibration}
+
+\subsection{Held-out-corner task}
+
+For a held-out corner $c$, the base set contains only primary rows from the other two corners. A new candidate pool contains 24 Latin-hypercube points per cell, or 96 points in total, all assigned to $c$. Acquisition initially receives only their input features. When a point is selected, the program writes its transistor-level netlist, launches ngspice, parses delay and power, appends the measured row to the support set, and retrains the surrogate. Validation rows from corner $c$ are then used to record the budget trajectory, but their labels are not passed to acquisition or stopping logic. Figure~\ref{fig:workflow} summarizes this separation.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/fig1_workflow.pdf}
+\caption{Deterministic simulator-in-the-loop protocol. PDK statistical switches are forced off before generating independent primary and validation sets. For an unseen process corner, acquisition receives a feature-only 96-point pool. Selected support points launch fresh ngspice runs, while the independent validation set is used only to evaluate each budget. Completing the candidate pool provides a measured exhaustive reference.}
+\label{fig:workflow}
+\end{figure}
+
+\subsection{Surrogate and acquisition strategies}
+
+The online support model is an Extra Trees regressor with 240 trees, \texttt{min\_samples\_leaf=2}, and all transformed features available at each split. Separate models predict delay and power. This model is fixed across all strategies. Its purpose is to provide a stable nonlinear support model, not to establish a new model-ranking result.
+
+For geometric selection, standardized numerical features are concatenated with one-hot cell indicators. Let $g(x)$ denote this vector and $S$ the queried set. The diversity score is
+\begin{equation}
+q_{\mathrm{div}}(x)=
+\begin{cases}
+\min_{s\in S}\lVert g(x)-g(s)\rVert_2, & S\neq\emptyset,\\
+\lVert g(x)-\bar g\rVert_2, & S=\emptyset,
+\end{cases}
+\end{equation}
+where $\bar g$ is the candidate-pool centroid. Each four-query cell-balanced space-filling batch selects one available point from each cell with the largest current diversity score. A primary-data-only development study fixed the policy to pure diversity before the independent online evaluation.
+
+Five policies use identical pools: random selection, cell-balanced random selection, uncertainty-only selection from tree-ensemble disagreement, ordinary greedy space filling, and cell-balanced space filling. The last policy is the operational method studied here. It guarantees equal support counts across the four cells at every completed batch. We do not assume that it must outperform ordinary space filling; the comparison tests whether cell balance changes reliability or cost.
+
+\subsection{Evaluation and statistics}
+
+After budgets $b\in\{0,4,\ldots,48\}$, the model is evaluated on all 160 validation rows from the held-out corner. We report delay and power $R^2$, MAE, the minimum delay $R^2$ across the four cells, Spearman correlation, Kendall's tau, top-20\% precision and recall, and NDCG. The main metric is independent-validation delay $R^2$ because delay shows the strongest zero-shot corner failure.
+
+The complete design has five seeds, three held-out corners, and five strategies, yielding 75 online runs and 3600 actual ngspice queries. Seventy-seven additional calls complete candidates not selected by any strategy. The online and completion phases therefore contain 3677 new simulator calls and 2311.5~s of measured serial-equivalent wall time.
+
+At budgets 24 and 48, the cell-balanced space-filling policy is compared with each baseline over 15 matched seed-corner pairs using two-sided Wilcoxon signed-rank tests. Holm correction is applied within each budget-metric family. The paired design prevents differences among candidate-pool seeds or corners from being mistaken for acquisition effects.
+
+\section{Results}
+
+\subsection{Configuration control restores numerical repeatability}
+
+The first result is methodological rather than predictive. Before the statistical-mode override, repeated nominal candidate simulations differed because global and mismatch variation were enabled by the included PDK configuration. With both switches forced to zero, independently launched repeats are identical. Across the online study, 1118 candidate groups were queried by at least two strategies, accounting for 3355 query records. The maximum within-group span is exactly 0 for $t_{\mathrm{PHL}}$, $t_{\mathrm{PLH}}$, average delay, and average power at the stored precision. This audit prevents stochastic PDK variation from being misreported as deterministic PVT response or acquisition noise.
+
+As a secondary same-flow sanity check, models trained on all 320 primary rows generalize to the independently sampled 480-row validation set. CatBoost reaches delay $R^2=0.9208$ and MAE 0.0321~ns, while Gaussian-process regression reaches power $R^2=0.9994$ and MAE 0.0449~$\mu$W. These values show that the deterministic tables are learnable, but they are not the main evidence for simulation reduction.
+
+\subsection{Same-corner queries repair delay extrapolation}
+
+Without same-corner support, the cell-balanced space-filling trajectory has pooled median delay $R^2=0.4825$ over the 15 seed-corner pairs. The corner dependence is substantial: median zero-support $R^2$ is 0.3055 for ff, 0.4825 for ss, and 0.7877 for typical. This confirms that a strong random-split or same-flow validation score does not justify zero-shot use at an absent corner.
+
+Fresh same-corner SPICE labels improve the difficult corners. At 24 queries, median delay $R^2$ reaches 0.7763 for ff, 0.8035 for ss, and 0.8896 for typical. At 48 queries, the values are 0.8797, 0.8488, and 0.8887. The pooled worst-cell delay $R^2$ rises from 0.3112 without support to 0.6785 at 24 queries and 0.7885 at 48 queries. Power changes little because its zero-support transfer is already strong: pooled median power $R^2$ is 0.9455 at zero support and 0.9465 at 48 queries.
+
+\begin{table}[t]
+\centering
+\caption{Cell-balanced space-filling results by held-out corner. Values are medians over five candidate-pool seeds.}
+\label{tab:corner-results}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Corner & Support & Delay $R^2$ & Worst-cell delay $R^2$ & Top-20\% recall & Measured time (s) \\
+\midrule
+\multirow{4}{*}{ff} & 0 & 0.3055 & $-0.1887$ & 0.8750 & 0.00 \\
+ & 24 & 0.7763 & 0.6000 & 0.8750 & 14.40 \\
+ & 48 & 0.8797 & 0.7883 & 0.8750 & 28.88 \\
+ & 96 reference & 0.9054 & 0.8539 & 0.8750 & 59.62 \\
+\midrule
+\multirow{4}{*}{ss} & 0 & 0.4825 & 0.3112 & 0.9688 & 0.00 \\
+ & 24 & 0.8035 & 0.7060 & 0.9688 & 14.38 \\
+ & 48 & 0.8488 & 0.7925 & 0.9688 & 28.86 \\
+ & 96 reference & 0.8541 & 0.7853 & 0.9688 & 59.20 \\
+\midrule
+\multirow{4}{*}{typical} & 0 & 0.7877 & 0.4872 & 0.8125 & 0.00 \\
+ & 24 & 0.8896 & 0.7755 & 0.8750 & 14.40 \\
+ & 48 & 0.8887 & 0.7983 & 0.9062 & 28.87 \\
+ & 96 reference & 0.8824 & 0.7918 & 0.9375 & 58.73 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{Space coverage is safer than uncertainty-only acquisition}
+
+Figure~\ref{fig:online-results}a--c compares budget trajectories. At 24 queries, cell-balanced space filling has pooled median delay $R^2=0.8119$, compared with 0.7625 for random, 0.7812 for cell-balanced random, 0.8114 for ordinary space filling, and 0.7232 for uncertainty-only selection. The difference from uncertainty-only selection remains significant after Holm correction ($p=0.0171$). The difference from random is positive but does not cross the corrected 0.05 threshold ($p=0.0646$).
+
+At 48 queries, the respective medians are 0.8729, 0.8564, 0.8685, 0.8674, and 0.8111. Cell-balanced space filling exceeds random ($p=0.0374$) and uncertainty-only selection ($p=0.0334$) after correction. It is statistically indistinguishable from cell-balanced random and ordinary space filling ($p=1.0$ for both corrected comparisons). The worst-cell advantage over random is not significant after correction ($p=0.1414$). These tests support a restrained conclusion: covering the new corner is safer than relying only on ensemble disagreement, while the present data do not demonstrate superiority over all space-filling alternatives.
+
+Cell balance is nevertheless operationally explicit. Its support-count range is zero at every complete four-query batch. At 48 queries, the median range is four points for random, ordinary space filling, and uncertainty-only selection. This property prevents one cell from consuming most of a small support budget even when aggregate accuracy appears acceptable.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/fig2_online_corner_calibration.pdf}
+\caption{Validation-blind simulator-in-the-loop results. (a--c) Median independent-validation delay $R^2$ across five seeds for each held-out process corner; translucent bands show the interquartile range. The horizontal line is the prespecified $R^2=0.75$ study threshold. (d) Distribution over 15 matched seed-corner runs for cell-balanced space filling at 24 and 48 queries and for the measured 96-query reference. Each point is one seed-corner pair. The 48-query budget reduces SPICE calls by 50\% and measured time by 51.3\%, with a median $R^2$ gap of 0.012 to the full reference.}
+\label{fig:online-results}
+\end{figure}
+
+\subsection{Half of the measured candidate pool approaches the exhaustive reference}
+
+Completing every candidate produces 15 measured 96-query references, one for each seed-corner pool. Their pooled median delay $R^2$ is 0.8824, median worst-cell delay $R^2$ is 0.8150, and median top-20\% recall is 0.9375. With 24 queries, cell-balanced space filling uses 75\% fewer calls and 75.7\% less measured time; median delay $R^2$ is 0.8119 and the median gap to the reference is 0.0798. With 48 queries, call reduction is 50\%, time reduction is 51.3\%, median delay $R^2$ is 0.8729, and the median gap is 0.0120.
+
+The 48-query budget also preserves the reference median top-20\% recall of 0.9375. Its median worst-cell delay $R^2$ is 0.7885, compared with 0.8150 for the reference. These results quantify the engineering trade-off directly: half of the candidate simulations retain most of the measured support benefit, whereas one quarter of the pool is useful but leaves a larger accuracy gap.
+
+\begin{table}[t]
+\centering
+\caption{Online budgets compared with the measured 96-query reference over 15 seed-corner runs.}
+\label{tab:exhaustive}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+Support & Query reduction & Time reduction & Delay $R^2$ & Gap to reference & Worst-cell $R^2$ & Top-20\% recall \\
+\midrule
+24 queries & 75.0\% & 75.7\% & 0.8119 & 0.0798 & 0.6785 & 0.8750 \\
+48 queries & 50.0\% & 51.3\% & 0.8729 & 0.0120 & 0.7885 & 0.9375 \\
+96-query reference & 0 & 0 & 0.8824 & 0 & 0.8150 & 0.9375 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{Validation-blind prequential error is informative but not a stopping guarantee}
+
+For each four-query batch, predictions are recorded before its SPICE labels are added. This prequential error is observable during operation and does not use the independent validation labels. Across 180 batches, prequential delay MAE correlates negatively with external delay $R^2$ (Spearman $\rho=-0.3869$, $p=8.09\times10^{-8}$) and external worst-cell delay $R^2$ ($\rho=-0.3352$, $p=4.22\times10^{-6}$). The direction is useful, but the magnitude is only moderate. We therefore treat prequential error as a diagnostic for suspicious batches, not as a validated automatic stopping rule.
+
+\section{Discussion}
+
+\subsection{What changes relative to an ML benchmark}
+
+The central result is no longer that one regressor achieves a larger random-split score. Every online support label is produced by a retained simulator call, validation labels are isolated from acquisition, and budget savings are measured against the same pool completed by SPICE. This design directly addresses whether the workflow reduces simulation effort under an unseen-corner stress test.
+
+The configuration audit is equally important. Open PDKs improve reproducibility only when their operating controls are recorded. Global and mismatch variation should not be disabled universally; they are essential for variation analysis. They are disabled here because the estimand is deterministic corner response. A future statistical-characterization study should instead expose random seeds, repeat counts, and distributional targets as first-class variables.
+
+\subsection{Why uncertainty-only selection underperforms}
+
+Tree disagreement is conditional on the current training distribution. At an unseen corner, early uncertainty estimates can be poorly calibrated and can repeatedly favor a narrow region. The sharp early degradation visible in some uncertainty-only trajectories is consistent with this failure mode. Geometric coverage does not require the surrogate to be calibrated before the first target-corner labels arrive. Cell balancing adds a simple topology-level safeguard.
+
+This finding should not be generalized to all uncertainty acquisition. Gaussian-process posteriors, calibrated ensembles, density weighting, or multi-fidelity acquisition may behave differently. The result only shows that a common tree-ensemble disagreement heuristic is not automatically reliable in this small corner-transfer setting.
+
+\subsection{Practical interpretation}
+
+The 96-point candidate pool is an early-exploration reference, not a complete characterization grid. The measured time per 96-query reference is about 59~s in this small transistor-level flow. Production characterization would involve more arcs, loads, slews, states, corners, and extracted views, so absolute cost would be much larger. The defensible extrapolation is qualitative: a validation-blind support loop can decide where to spend a bounded number of new simulations, while final selected conditions remain subject to the intended sign-off flow.
+
+\subsection{Limitations}
+
+The study uses one PDK, one simulator version, one primitive model family, four controlled combinational cells, and pre-layout netlists. Candidate and validation data come from the same generation distribution. The method has not been tested on sequential cells, AOI/OAI structures, all input-state arcs, leakage tables, extracted parasitics, or another PDK. The acquisition policy is deliberately simple and is not claimed as algorithmically novel. Five candidate-pool seeds provide matched comparisons, but broader process and topology diversity is needed before asserting general corner-calibration behavior.
+
+The study also does not show that 48 queries are universally optimal. It shows that, for these 15 measured pools, 48 queries retain a small median gap to completing 96 candidates. A deployment should set its budget from application-specific error tolerance and should retain SPICE verification of final design points.
+
+\section{Conclusion}
+
+This paper presents a deterministic, provenance-controlled simulator-in-the-loop protocol for unseen-corner support in GF180MCU standard-cell exploration. Explicit statistical-switch control eliminates unintended run-to-run variation. Fresh ngspice queries, validation-label isolation, matched strategy comparisons, and measured exhaustive references convert a static surrogate exercise into a simulation-allocation study. Cell-balanced space filling raises pooled median delay $R^2$ from 0.4825 without same-corner support to 0.8729 with 48 queries. Relative to completing all 96 candidates, this budget cuts calls by 50\% and measured time by 51.3\%, while retaining a median delay-$R^2$ gap of 0.012. Ordinary space filling performs similarly, and uncertainty-only selection is less reliable. The resulting contribution is an auditable engineering protocol and a reproducible negative-and-positive evidence package, bounded to early pre-layout exploration rather than sign-off characterization.
+
+\section*{CRediT authorship contribution statement}
+
+Jiaqing Chen: Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Writing -- original draft, Visualization. Feng Shao: Supervision, Conceptualization, Methodology, Writing -- review and editing.
+
+\section*{Declaration of competing interest}
+
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Funding}
+
+This research received no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.
+
+\section*{Data and code availability}
+
+The live project repository is available at \url{https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej}. The preceding reproducibility release is archived at \url{https://doi.org/10.5281/zenodo.20524583}. The deterministic datasets, online query records, exhaustive-reference records, netlists, logs, analysis scripts, and figure source data introduced in this extension will be included in a new versioned release before submission of this manuscript.
+
+\section*{Acknowledgments}
+
+The authors thank the GF180MCU open-PDK and ngspice communities for providing the process models, simulator, and documentation that enabled this reproducible study.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+
+During the preparation of this work, the authors used AI-assisted tools for manuscript organization, language editing, code assistance, and consistency checking. The authors reviewed and edited all outputs and take full responsibility for the content of the article.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{microelectronics_journal_references}
+
+\end{document}

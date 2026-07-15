@@ -1,22 +1,22 @@
 cff-version: 1.2.0
 message: "If you use this dataset or code, please cite the associated manuscript and this repository."
-title: "GF180MCU SPICE-Efficient Standard-Cell Screening Reproducibility Package"
+title: "Deterministic Simulator-in-the-Loop GF180MCU Corner Calibration Package"
 authors:
   - family-names: "Chen"
     given-names: "Jiaqing"
   - family-names: "Shao"
     given-names: "Feng"
-version: "0.2.0-pre"
-date-released: "2026-07-09"
-doi: "10.5281/zenodo.20524583"
+version: "0.3.0-pre"
+date-released: "2026-07-15"
 repository-code: "https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej"
-abstract: "Data, scripts, result summaries, figures, and provenance notes supporting SPICE-efficient candidate screening and corner-support calibration for GF180MCU standard-cell exploration."
+abstract: "Deterministic GF180MCU/ngspice datasets, genuine simulator-in-the-loop query records, measured exhaustive references, scripts, figures, and provenance notes for unseen-corner standard-cell calibration."
 keywords:
   - GF180MCU
   - ngspice
   - standard-cell exploration
   - surrogate modeling
-  - candidate screening
-  - conformal prediction
+  - simulator-in-the-loop
+  - process-corner calibration
+  - sequential design
   - reproducibility
 license: "MIT"

@@ -1,0 +1,3 @@
+selection,runs,median_top10_hits,median_top20_hits,median_actual_rank,median_actual_score,median_spearman,empirical_p_top10_ge_surrogate,empirical_p_top20_ge_surrogate,empirical_p_rank_le_surrogate
+random_selection,10000,1.0,2.0,32.5,0.30974774212625333,0.9785485347985347,,,
+surrogate_top_score,20,7.0,11.0,6.5,0.0905614749742657,0.9785485347985347,0.0,0.0,0.0

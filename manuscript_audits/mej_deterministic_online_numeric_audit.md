@@ -1,0 +1,28 @@
+# Deterministic Online Manuscript Numeric Audit
+
+- PASS: primary/validation row counts are 320/480 and all statistical switches are off.
+- PASS: 3600 online ngspice queries completed successfully.
+- PASS: 1118 repeated candidate groups have zero delay and power spans.
+- PASS: proposed median delay R2 at budget 0 = 0.482465.
+- PASS: proposed median delay R2 at budget 24 = 0.811908.
+- PASS: proposed median delay R2 at budget 48 = 0.872926.
+- PASS: 48-query reduction percent = 50.
+- PASS: 48-query time reduction percent = 51.3204.
+- PASS: 48-query gap to reference = 0.0119765.
+- PASS: full-reference delay R2 = 0.882372.
+- PASS: 48-query worst-cell delay R2 = 0.788462.
+- PASS: full-reference worst-cell delay R2 = 0.814963.
+- PASS: 48-query top-20 recall = 0.9375.
+- PASS: 48-query corrected p versus random = 0.0373535.
+- PASS: 48-query corrected p versus uncertainty = 0.0334473.
+- PASS: prequential/external Spearman rho = -0.386899.
+- PASS: zero-support result is present as `0.4825`.
+- PASS: 24-query result is present as `0.8119`.
+- PASS: 48-query result is present as `0.8729`.
+- PASS: full-reference result is present as `0.8824`.
+- PASS: measured-time reduction is present as `51.3\%`.
+- PASS: gap to reference is present as `0.0120`.
+- PASS: corrected random comparison is present as `p=0.0374`.
+- PASS: corrected uncertainty comparison is present as `p=0.0334`.
+- PASS: journal target is present as `\journal{Microelectronics Journal}`.
+- PASS: no V2/V3/V4 or prior-paper wording remains in the manuscript.

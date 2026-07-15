@@ -1,0 +1,7 @@
+internal_metric,external_metric,pairs,spearman_rho,p_value
+prequential_delay_mae_ns,external_delay_r2,180,-0.38689877259586203,8.092795636421048e-08
+prequential_delay_mae_ns,external_worst_cell_delay_r2,180,-0.33524491496651126,4.219274939445883e-06
+prequential_delay_mape_pct,external_delay_r2,180,-0.33853513997345597,3.3472234448500478e-06
+prequential_delay_mape_pct,external_worst_cell_delay_r2,180,-0.38862722100476355,7.003365602824813e-08
+prequential_power_mae_uW,external_delay_r2,180,-0.26915645544615574,0.00025857534212296574
+prequential_power_mae_uW,external_worst_cell_delay_r2,180,-0.2682263855880325,0.0002721047874116954

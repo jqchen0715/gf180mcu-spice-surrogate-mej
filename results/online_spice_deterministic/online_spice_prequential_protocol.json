@@ -1,0 +1,8 @@
+{
+  "strategy": "cell_balanced_space_filling",
+  "runs": 15,
+  "batches": 180,
+  "n_estimators": 240,
+  "v3_used_in_diagnostic": false,
+  "v3_used_afterward_for_correlation_only": true
+}
