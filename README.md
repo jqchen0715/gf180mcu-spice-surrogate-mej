@@ -196,15 +196,14 @@ for the deterministic online extension.
 
 ## Citation
 
-The preceding static-table package is archived at:
+The complete cross-PDK `v0.5.0` package is archived at:
 
 ```text
-https://doi.org/10.5281/zenodo.20524583
+https://doi.org/10.5281/zenodo.21415175
 ```
 
-The DOI above identifies release `v0.1.0`. The version DOI for the cross-PDK
-`v0.5.0` archive is recorded in `DATA_AVAILABILITY.md` and the corresponding
-GitHub release after Zenodo registration.
+DOI `10.5281/zenodo.20524583` identifies the earlier `v0.1.0` static-table
+package. Use the version-specific DOI above when citing the present release.
 
 The live GitHub repository is:
 

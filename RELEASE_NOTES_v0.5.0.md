@@ -3,6 +3,8 @@
 This release archives the complete reproducibility package for the expanded
 Microelectronics Journal study.
 
+Version DOI: https://doi.org/10.5281/zenodo.21415175
+
 ## Main additions
 
 - deterministic GF180MCU primary and independent validation datasets;

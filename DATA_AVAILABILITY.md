@@ -1,9 +1,9 @@
 # Data and Code Availability
 
-The preceding static-table reproducibility package is archived at:
+The complete cross-PDK reproducibility package is archived at:
 
 ```text
-https://doi.org/10.5281/zenodo.20524583
+https://doi.org/10.5281/zenodo.21415175
 ```
 
 The live GitHub repository is:
@@ -13,9 +13,9 @@ https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej
 ```
 
 Release `v0.5.0` contains the deterministic cross-PDK simulator-in-the-loop
-extension. Its version-specific Zenodo DOI is recorded here and in the final
-manuscript after registration; the preceding DOI above remains a permanent
-record of the earlier `v0.1.0` package.
+extension. DOI `10.5281/zenodo.21415175` identifies this immutable release;
+DOI `10.5281/zenodo.20524583` remains the permanent record of the earlier
+`v0.1.0` package.
 
 The repository includes:
 

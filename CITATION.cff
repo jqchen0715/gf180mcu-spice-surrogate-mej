@@ -8,6 +8,7 @@ authors:
     given-names: "Feng"
 version: "0.5.0"
 date-released: "2026-07-17"
+doi: "10.5281/zenodo.21415175"
 repository-code: "https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej"
 abstract: "Deterministic GF180MCU and SKY130 ngspice datasets, simulator-in-the-loop query records, measured references, released-standard-cell validation, a GF180MCU-locked stopping rule replicated on SKY130 without retuning, a partial Liberty comparison, scripts, figures, and provenance notes for unseen-corner standard-cell calibration."
 keywords:
