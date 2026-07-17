@@ -1,0 +1,42 @@
+* Released GF180MCU 7-track CDL external-validation testbench
+* sample_id=8000152 cell=nor2_1 arc=A1_to_ZN__A2=0 corner=ss
+.title GF180MCU library cell nor2_1 A1_to_ZN__A2=0
+.option method=gear reltol=1e-4 abstol=1e-12 vntol=1e-6
+.temp 107.79374
+.include "design.ngspice"
+.param sw_stat_global=0 sw_stat_mismatch=0
+.lib "sm141064.ngspice" ss
+
+* Copyright 2022 GlobalFoundries PDK Authors
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+
+.SUBCKT gf180mcu_fd_sc_mcu7t5v0__nor2_1 A1 A2 ZN VDD VNW VPW VSS
+X_i_1 ZN A2 VSS VPW nmos_6p0 W=5.65e-07 L=6e-07
+X_i_0 VSS A1 ZN VPW nmos_6p0 W=5.65e-07 L=6e-07
+X_i_3 net_0 A2 VDD VNW pmos_6p0 W=1.22e-06 L=5e-07
+X_i_2 ZN A1 net_0 VNW pmos_6p0 W=1.22e-06 L=5e-07
+.ENDS
+
+VDD vdd 0 1.6563563
+VIN a1 0 PULSE(0 1.6563563 24.0n 1.9714204n 1.9714204n 70.0n 160.0n)
+VFIX_A2 a2 0 0
+XU1 a1 a2 zn vdd vdd 0 0 gf180mcu_fd_sc_mcu7t5v0__nor2_1
+CLOAD zn 0 0.090146809p
+
+.tran 5p 340.0n
+.measure tran tphl TRIG v(a1) VAL=0.82817816 RISE=1 TARG v(zn) VAL=0.82817816 FALL=1
+.measure tran tplh TRIG v(a1) VAL=0.82817816 FALL=1 TARG v(zn) VAL=0.82817816 RISE=1
+.measure tran i_vdd_avg AVG i(VDD) FROM=10n TO=330n
+.measure tran power_avg_uW PARAM='-1.6563563*i_vdd_avg*1e6'
+.end

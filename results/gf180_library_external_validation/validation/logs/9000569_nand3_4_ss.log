@@ -1,0 +1,61 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: GF180MCU library cell nand3_4 A1_to_ZN__A2=1,A3=1
+
+Doing analysis at TEMP = -36.684927 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                    1.83251
+a1                                           0
+a2                                     1.83251
+a3                                     1.83251
+xu1.net_1_3                        6.00728e-15
+xu1.net_0                          1.20276e-14
+xu1.net_1_2                        5.98523e-15
+xu1.net_1_1                        6.00728e-15
+xu1.net_1_0                        6.00162e-15
+xu1.net_0_0                        1.20032e-14
+zn                                     1.83251
+vfix_a3#branch                               0
+vfix_a2#branch                               0
+vin#branch                                   0
+vdd#branch                        -7.37005e-12
+
+ Reference value :  2.52518e-08
+ Reference value :  5.73918e-08
+ Reference value :  8.77968e-08
+ Reference value :  1.17831e-07
+ Reference value :  1.48716e-07
+ Reference value :  1.79356e-07
+ Reference value :  2.09912e-07
+ Reference value :  2.41117e-07
+ Reference value :  2.71176e-07
+ Reference value :  3.01031e-07
+ Reference value :  3.29961e-07
+No. of Data Rows : 68032
+
+  Measurements for Transient Analysis
+
+tphl                =  5.37794e-10 targ=  2.49899e-08 trig=  2.44521e-08
+tplh                =  6.78612e-10 targ=  9.60350e-08 trig=  9.53564e-08
+i_vdd_avg           =  -2.65381e-07 from=  1.00000e-08 to=  3.30001e-07
+power_avg_uw        =  4.86314e-01
+
+
+Total analysis time (seconds) = 3.87837
+
+Total elapsed time (seconds) = 3.944 
+
+Total DRAM available = 16384.000 MB.
+DRAM currently available =   77.062 MB.
+Maximum ngspice program size =   14.953 MB.
+Current ngspice program size =   14.953 MB.
+

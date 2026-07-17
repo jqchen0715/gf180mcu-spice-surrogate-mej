@@ -1,0 +1,62 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: GF180MCU library cell nand3_4 A1_to_ZN__A2=1,A3=1
+
+Doing analysis at TEMP = 39.020271 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                    1.84599
+a1                                           0
+a2                                     1.84599
+a3                                     1.84599
+xu1.net_1_3                        5.84548e-10
+xu1.net_0                           1.1691e-09
+xu1.net_1_2                        5.84548e-10
+xu1.net_1_1                        5.84548e-10
+xu1.net_1_0                        5.84548e-10
+xu1.net_0_0                         1.1691e-09
+zn                                     1.84599
+vfix_a3#branch                               0
+vfix_a2#branch                               0
+vin#branch                                   0
+vdd#branch                        -7.83497e-12
+
+ Reference value :  1.86314e-08
+ Reference value :  4.64512e-08
+ Reference value :  7.45562e-08
+ Reference value :  1.02906e-07
+ Reference value :  1.31865e-07
+ Reference value :  1.60565e-07
+ Reference value :  1.87423e-07
+ Reference value :  2.15996e-07
+ Reference value :  2.44016e-07
+ Reference value :  2.71656e-07
+ Reference value :  3.00660e-07
+ Reference value :  3.30375e-07
+No. of Data Rows : 68034
+
+  Measurements for Transient Analysis
+
+tphl                =  2.54036e-09 targ=  3.22397e-08 trig=  2.96994e-08
+tplh                =  4.08149e-09 targ=  1.15180e-07 trig=  1.11098e-07
+i_vdd_avg           =  -1.30241e-06 from=  1.00000e-08 to=  3.30005e-07
+power_avg_uw        =  2.40424e+00
+
+
+Total analysis time (seconds) = 3.66453
+
+Total elapsed time (seconds) = 3.748 
+
+Total DRAM available = 16384.000 MB.
+DRAM currently available =  112.219 MB.
+Maximum ngspice program size =   17.266 MB.
+Current ngspice program size =   17.266 MB.
+

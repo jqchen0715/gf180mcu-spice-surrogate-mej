@@ -1,0 +1,51 @@
+* Released GF180MCU 7-track CDL external-validation testbench
+* sample_id=10420069 cell=mux2_1 arc=I0_to_Z__I1=0,S=0 corner=ss
+.title GF180MCU library cell mux2_1 I0_to_Z__I1=0,S=0
+.option method=gear reltol=1e-4 abstol=1e-12 vntol=1e-6
+.temp -11.76269
+.include "design.ngspice"
+.param sw_stat_global=0 sw_stat_mismatch=0
+.lib "sm141064.ngspice" ss
+
+* Copyright 2022 GlobalFoundries PDK Authors
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+
+.SUBCKT gf180mcu_fd_sc_mcu7t5v0__mux2_1 I0 I1 S Z VDD VNW VPW VSS
+X_MN2 VSS int04 Z VPW nmos_6p0 W=8.2e-07 L=6e-07
+X_MN4 net_1 I1 VSS VPW nmos_6p0 W=3.6e-07 L=6e-07
+X_MN8 int04 S net_1 VPW nmos_6p0 W=3.6e-07 L=6e-07
+X_MN7 net_3 sel1_n int04 VPW nmos_6p0 W=3.6e-07 L=6e-07
+X_MN3 VSS I0 net_3 VPW nmos_6p0 W=3.6e-07 L=6e-07
+X_MN1 sel1_n S VSS VPW nmos_6p0 W=3.6e-07 L=6e-07
+X_MP5 VDD int04 Z VNW pmos_6p0 W=1.22e-06 L=5e-07
+X_MP4 net_0 I1 VDD VNW pmos_6p0 W=6.15e-07 L=5e-07
+X_MP8 int04 sel1_n net_0 VNW pmos_6p0 W=6.15e-07 L=5e-07
+X_MP7 net_2 S int04 VNW pmos_6p0 W=6.15e-07 L=5e-07
+X_MP3 VDD I0 net_2 VNW pmos_6p0 W=6.15e-07 L=5e-07
+X_MP1 sel1_n S VDD VNW pmos_6p0 W=6.15e-07 L=5e-07
+.ENDS
+
+VDD vdd 0 1.6650136
+VIN i0 0 PULSE(0 1.6650136 24.0n 4.1927282n 4.1927282n 70.0n 160.0n)
+VFIX_I1 i1 0 0
+VFIX_S s 0 0
+XU1 i0 i1 s z vdd vdd 0 0 gf180mcu_fd_sc_mcu7t5v0__mux2_1
+CLOAD z 0 0.10917721p
+
+.tran 5p 340.0n
+.measure tran tplh TRIG v(i0) VAL=0.83250681 RISE=1 TARG v(z) VAL=0.83250681 RISE=1
+.measure tran tphl TRIG v(i0) VAL=0.83250681 FALL=1 TARG v(z) VAL=0.83250681 FALL=1
+.measure tran i_vdd_avg AVG i(VDD) FROM=10n TO=330n
+.measure tran power_avg_uW PARAM='-1.6650136*i_vdd_avg*1e6'
+.end

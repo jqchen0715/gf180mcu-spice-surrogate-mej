@@ -1,0 +1,31 @@
+# Official-Library Extension Numeric Audit
+
+- PASS: both independent released-CDL datasets contain 576 successful deterministic rows, eight families, 16 variants, and drive strengths 1/4.
+- PASS: 15 measured pools contain 1440 successful fresh SPICE calls.
+- PASS: released-CDL median delay R2 at budget 0 = 0.217056.
+- PASS: released-CDL median delay R2 at budget 32 = 0.825794.
+- PASS: released-CDL median delay R2 at budget 48 = 0.868429.
+- PASS: released-CDL median delay R2 at budget 80 = 0.902783.
+- PASS: released-CDL median delay R2 at budget 96 = 0.907024.
+- PASS: released-CDL median worst-family R2 at budget 48 = 0.38183.
+- PASS: released-CDL median worst-family R2 at budget 96 = 0.693236.
+- PASS: confirmation median stop budget = 88.
+- PASS: confirmation maximum gap = 0.0207475.
+- PASS: confirmation gap <= 0.02 rate = 0.833333.
+- PASS: confirmation gap <= 0.05 rate = 1.
+- PASS: confirmation median worst-family R2 = 0.734842.
+- PASS: Liberty Spearman rho = 0.990005.
+- PASS: Liberty Pearson r = 0.991568.
+- PASS: Liberty R2 = 0.946003.
+- PASS: Liberty median absolute percentage error = 18.5841.
+- PASS: Liberty median SPICE-to-Liberty ratio = 0.814159.
+- PASS: online call count is reported as `1440`.
+- PASS: zero-support external result is reported as `0.2171`.
+- PASS: 48-query external result is reported as `0.8684`.
+- PASS: full external result is reported as `0.9070`.
+- PASS: maximum stopping gap is reported as `0.0207`.
+- PASS: stopped worst-family result is reported as `0.7348`.
+- PASS: Liberty rank correlation is reported as `0.9900`.
+- PASS: Liberty absolute-error boundary is reported as `18.58\%`.
+- PASS: the released-library validation figure exists.
+- PASS: released-library CSV data contain no absolute `/Users/` paths.

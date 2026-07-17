@@ -1,0 +1,41 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: GF180MCU library cell inv_1 I_to_ZN
+
+Doing analysis at TEMP = -28.124111 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                    1.64902
+i                                            0
+zn                                     1.64902
+vin#branch                                   0
+vdd#branch                        -1.66723e-12
+
+ Reference value :  1.99629e-07
+No. of Data Rows : 68030
+
+  Measurements for Transient Analysis
+
+tphl                =  2.57958e-09 targ=  3.20679e-08 trig=  2.94883e-08
+tplh                =  5.02438e-09 targ=  1.15489e-07 trig=  1.10465e-07
+i_vdd_avg           =  -8.04171e-07 from=  1.00000e-08 to=  3.30001e-07
+power_avg_uw        =  1.32610e+00
+
+
+Total analysis time (seconds) = 0.341309
+
+Total elapsed time (seconds) = 0.402 
+
+Total DRAM available = 16384.000 MB.
+DRAM currently available =  134.672 MB.
+Maximum ngspice program size =   17.984 MB.
+Current ngspice program size =   17.984 MB.
+

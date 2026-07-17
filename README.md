@@ -6,10 +6,10 @@ and provenance notes supporting the deterministic simulator-in-the-loop manuscri
 **A Deterministic Simulator-in-the-Loop Protocol for Sample-Efficient GF180MCU
 Standard-Cell Corner Calibration**
 
-The study targets early design-space exploration for controlled transistor-level
-standard-cell topologies in GF180MCU using ngspice. It is not a sign-off flow,
-not a production standard-cell library generator, and not a full Liberty
-characterization package.
+The study targets early design-space exploration for both controlled
+transistor-level topologies and released GF180MCU standard-cell CDLs using
+ngspice. It is not a sign-off flow, a production standard-cell library
+generator, or a full Liberty characterization package.
 
 ## Current Main Evidence
 
@@ -34,6 +34,20 @@ structured query and result records. The next Zenodo release should additionally
 include the per-query netlists and logs listed in
 `DETERMINISTIC_ONLINE_REPRODUCIBILITY.md`.
 
+The released-library external validation is under:
+
+```text
+results/gf180_library_external_validation/
+```
+
+It contains two independent 576-row datasets, 15 completed 96-point online
+pools (1440 fresh SPICE calls), a stopping rule locked on nine development
+pools and tested on six untouched confirmation pools, and a 432-point partial
+comparison with official Liberty delay surfaces. The 16 released-CDL variants
+span eight combinational families and drive strengths 1 and 4. Exact commands,
+PDK commits, and interpretation boundaries are documented in
+`RELEASED_LIBRARY_REPRODUCIBILITY.md`.
+
 The current manuscript and numeric audit are:
 
 ```text
@@ -57,6 +71,11 @@ experiments/
   replay_online_prequential_diagnostics.py
   tune_corner_acquisition_weight.py
   plot_deterministic_online_results.py
+  generate_library_spice_datasets.py
+  library_online_external_validation.py
+  validate_library_online_stopping.py
+  liberty_surface_crosscheck.py
+  plot_official_library_validation.py
   sci_revision_enhanced_evaluation.py
   v2_baseline_transfer.py
   source_aware_ablation.py
@@ -68,6 +87,7 @@ experiments/
 
 results/
   online_spice_deterministic/
+  gf180_library_external_validation/
   deterministic_sci_revision/
   deterministic_v3_scale_validation/
   deterministic_robustness/
@@ -92,6 +112,7 @@ manuscript/
 
 spice_v2/
   generate_spice_dataset.py
+  gf180_library_cells.py
   schema.md
   status.md
   netlists/
@@ -128,12 +149,14 @@ Run the current publication-facing numeric audit from the repository root:
 
 ```bash
 python tools/audit_deterministic_online_manuscript.py
+python tools/audit_official_library_extension.py
 ```
 
 For the deterministic data-generation and simulator-in-the-loop commands, see:
 
 ```text
 DETERMINISTIC_ONLINE_REPRODUCIBILITY.md
+RELEASED_LIBRARY_REPRODUCIBILITY.md
 ```
 
 ## Legacy Package Note

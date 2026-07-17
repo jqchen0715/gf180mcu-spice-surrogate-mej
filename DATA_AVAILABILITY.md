@@ -29,10 +29,19 @@ The repository includes:
 - `manuscript/mej_deterministic_online_submission.tex`
 - `manuscript/mej_deterministic_online_submission.pdf`
 - `manuscript_audits/mej_deterministic_online_numeric_audit.md`
+- `spice_v2/gf180_library_cells.py`
+- `experiments/generate_library_spice_datasets.py`
+- `experiments/library_online_external_validation.py`
+- `experiments/validate_library_online_stopping.py`
+- `experiments/liberty_surface_crosscheck.py`
+- `results/gf180_library_external_validation/`
+- `manuscript_audits/mej_official_library_extension_numeric_audit.md`
 
-The versioned Zenodo archive should additionally contain all deterministic
-primary/validation and online per-query netlists and logs. See
-`DETERMINISTIC_ONLINE_REPRODUCIBILITY.md` for the complete release checklist.
+The prepared repository copy contains the released-library netlists and logs in
+addition to the structured tables. The versioned Zenodo archive should retain
+these records and the controlled-stage per-query provenance. See
+`DETERMINISTIC_ONLINE_REPRODUCIBILITY.md` and
+`RELEASED_LIBRARY_REPRODUCIBILITY.md` for the complete release checklist.
 
 The GF180MCU PDK checkout is not redistributed. The manuscript cites the
 official repositories and reports the exact local PDK commit and model-file

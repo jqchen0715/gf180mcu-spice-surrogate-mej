@@ -1,0 +1,62 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: GF180MCU library cell nand3_4 A1_to_ZN__A2=1,A3=1
+
+Doing analysis at TEMP = 114.037810 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                     1.7547
+a1                                           0
+a2                                      1.7547
+a3                                      1.7547
+xu1.net_1_3                        7.08611e-08
+xu1.net_0                          1.41722e-07
+xu1.net_1_2                        7.08611e-08
+xu1.net_1_1                        7.08611e-08
+xu1.net_1_0                        7.08611e-08
+xu1.net_0_0                        1.41722e-07
+zn                                      1.7547
+vfix_a3#branch                               0
+vfix_a2#branch                               0
+vin#branch                                   0
+vdd#branch                        -4.58114e-11
+
+ Reference value :  1.65564e-08
+ Reference value :  4.60001e-08
+ Reference value :  7.42051e-08
+ Reference value :  1.03320e-07
+ Reference value :  1.34753e-07
+ Reference value :  1.63643e-07
+ Reference value :  1.91885e-07
+ Reference value :  2.21930e-07
+ Reference value :  2.50240e-07
+ Reference value :  2.78908e-07
+ Reference value :  3.08053e-07
+ Reference value :  3.36563e-07
+No. of Data Rows : 68034
+
+  Measurements for Transient Analysis
+
+tphl                =  3.26051e-09 targ=  3.09443e-08 trig=  2.76838e-08
+tplh                =  4.09253e-09 targ=  1.09144e-07 trig=  1.05051e-07
+i_vdd_avg           =  -1.92841e-06 from=  1.00000e-08 to=  3.30003e-07
+power_avg_uw        =  3.38379e+00
+
+
+Total analysis time (seconds) = 3.26778
+
+Total elapsed time (seconds) = 3.360 
+
+Total DRAM available = 16384.000 MB.
+DRAM currently available =  116.641 MB.
+Maximum ngspice program size =   17.281 MB.
+Current ngspice program size =   17.281 MB.
+

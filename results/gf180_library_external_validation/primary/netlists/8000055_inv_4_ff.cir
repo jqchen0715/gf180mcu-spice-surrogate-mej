@@ -1,0 +1,46 @@
+* Released GF180MCU 7-track CDL external-validation testbench
+* sample_id=8000055 cell=inv_4 arc=I_to_ZN corner=ff
+.title GF180MCU library cell inv_4 I_to_ZN
+.option method=gear reltol=1e-4 abstol=1e-12 vntol=1e-6
+.temp -13.360998
+.include "design.ngspice"
+.param sw_stat_global=0 sw_stat_mismatch=0
+.lib "sm141064.ngspice" ff
+
+* Copyright 2022 GlobalFoundries PDK Authors
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+
+.SUBCKT gf180mcu_fd_sc_mcu7t5v0__inv_4 I ZN VDD VNW VPW VSS
+X_i_0_0 ZN I VSS VPW nmos_6p0 W=8.2e-07 L=6e-07
+X_i_0_1 VSS I ZN VPW nmos_6p0 W=8.2e-07 L=6e-07
+X_i_0_2 ZN I VSS VPW nmos_6p0 W=8.2e-07 L=6e-07
+X_i_0_3 VSS I ZN VPW nmos_6p0 W=8.2e-07 L=6e-07
+X_i_1_0 ZN I VDD VNW pmos_6p0 W=1.22e-06 L=5e-07
+X_i_1_1 VDD I ZN VNW pmos_6p0 W=1.22e-06 L=5e-07
+X_i_1_2 ZN I VDD VNW pmos_6p0 W=1.22e-06 L=5e-07
+X_i_1_3 VDD I ZN VNW pmos_6p0 W=1.22e-06 L=5e-07
+.ENDS
+
+VDD vdd 0 1.9201893
+VIN i 0 PULSE(0 1.9201893 24.0n 0.90391036n 0.90391036n 70.0n 160.0n)
+
+XU1 i zn vdd vdd 0 0 gf180mcu_fd_sc_mcu7t5v0__inv_4
+CLOAD zn 0 0.18924101p
+
+.tran 5p 340.0n
+.measure tran tphl TRIG v(i) VAL=0.96009465 RISE=1 TARG v(zn) VAL=0.96009465 FALL=1
+.measure tran tplh TRIG v(i) VAL=0.96009465 FALL=1 TARG v(zn) VAL=0.96009465 RISE=1
+.measure tran i_vdd_avg AVG i(VDD) FROM=10n TO=330n
+.measure tran power_avg_uW PARAM='-1.9201893*i_vdd_avg*1e6'
+.end

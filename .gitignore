@@ -16,12 +16,14 @@ env/
 *.out
 *.synctex.gz
 *.toc
+*.spl
 
 # Keep the publication SPICE logs as provenance records.
 !spice_v2/logs/
 !spice_v2/logs/*.log
 !spice_v2/logs_v3_480/
 !spice_v2/logs_v3_480/*.log
+!results/gf180_library_external_validation/**/*.log
 
 # Local/private or heavyweight materials not redistributed in this repository
 gf180mcu-pdk/

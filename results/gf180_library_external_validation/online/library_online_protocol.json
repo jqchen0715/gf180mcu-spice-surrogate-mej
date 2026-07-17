@@ -1,0 +1,26 @@
+{
+  "dataset_role": "released GF180MCU 7-track CDL external validation",
+  "cell_families": [
+    "AOI21",
+    "INV",
+    "MUX2",
+    "NAND2",
+    "NAND3",
+    "NOR2",
+    "OAI21",
+    "XOR2"
+  ],
+  "candidate_pool_size": 96,
+  "acquisition": "cell-variant-balanced farthest-first space coverage",
+  "validation_labels_visible_to_acquisition": false,
+  "full_reference": "all 96 candidate netlists measured with ngspice",
+  "development_seeds_for_stopping": [
+    0,
+    1,
+    2
+  ],
+  "locked_confirmation_seeds_for_stopping": [
+    3,
+    4
+  ]
+}

@@ -32,11 +32,11 @@ postcode={100191},
 country={China}}
 
 \begin{abstract}
-Surrogate models can interpolate standard-cell simulation data, but an offline regression benchmark does not establish that they reduce new SPICE work. This paper instead studies unseen-process-corner calibration through a deterministic simulator-in-the-loop protocol. GF180MCU statistical-variation switches are explicitly disabled, and two independently sampled ngspice datasets provide 320 primary rows and 480 evaluation-only validation rows for controlled INV, NAND2, NOR2, and XOR2 arcs. For each of five random seeds and three held-out corners, five acquisition strategies query fresh SPICE labels from a 96-candidate feature-only pool in four-point batches. A cell-balanced space-filling policy improves median independent-validation delay $R^2$ from 0.4825 without same-corner support to 0.8119 with 24 queries and 0.8729 with 48 queries. Completing all 96 candidates gives a median $R^2$ of 0.8824. Thus, 48 queries retain a median gap of 0.0120 to the measured exhaustive reference while reducing SPICE calls by 50\% and measured simulation time by 51.3\%. At this budget, the policy exceeds random acquisition after Holm correction ($p=0.0374$), but is statistically indistinguishable from ordinary space filling; uncertainty-only acquisition is less reliable. Repeated simulations of 1118 candidate groups are numerically identical after the configuration fix. The contribution is therefore an auditable simulation-allocation protocol and evidence package, not a new learning architecture or a replacement for layout-extracted sign-off and complete Liberty characterization.
+An offline regression benchmark does not establish that a surrogate reduces new standard-cell SPICE work. We therefore study unseen-corner calibration as a deterministic simulator-in-the-loop allocation problem. A controlled GF180MCU experiment uses independently sampled primary and evaluation-only datasets for four logic topologies; five acquisition policies then request fresh ngspice labels from 15 feature-only candidate pools. Cell-balanced space filling reaches a median delay $R^2$ of 0.8729 with 48 of 96 queries, leaving a 0.0120 gap to the measured exhaustive reference while reducing calls by 50\% and measured time by 51.3\%. The protocol is then stress-tested on released GF180MCU standard-cell CDLs spanning eight logic families, two drive strengths, and three held-out corners. Across 15 new pools and 1440 successful simulator calls, the corresponding median $R^2$ rises from 0.2171 without target-corner support to 0.8684 at 48 queries and 0.9070 at 96 queries. A stopping rule locked on nine development pools and evaluated on six untouched confirmation pools stops at a median budget of 88; five of six runs remain within 0.02 and all remain within 0.05 $R^2$ of their measured references. A separate 432-point comparison with official Liberty tables preserves delay ordering (Spearman $\rho=0.9900$), although the 18.6\% median absolute percentage error exposes non-negligible characterization-condition bias. The contribution is an auditable allocation and stopping protocol with a released-library external test, bounded to same-PDK pre-layout exploration rather than complete Liberty characterization or sign-off.
 \end{abstract}
 
 \begin{keyword}
-standard cells \sep GF180MCU \sep SPICE simulation \sep sequential design \sep process-corner calibration \sep surrogate modeling \sep reproducibility
+standard cells \sep GF180MCU \sep SPICE simulation \sep sequential experimental design \sep process-corner calibration \sep Liberty characterization \sep reproducibility
 \end{keyword}
 
 \end{frontmatter}
@@ -49,20 +49,20 @@ Learning-assisted circuit design has been studied in analog, mixed-signal, and s
 
 The third issue is concrete in the GF180MCU flow used here. The included design configuration enables global and mismatch statistical switches by default. If these switches are not overridden, two nominally identical netlists can produce different values while the resulting table is described as a deterministic PVT study. That behavior may be appropriate for variation analysis, but it confounds a corner-calibration experiment unless random draws and seeds are modeled explicitly. We therefore force both switches off and retain the configuration, model path, netlist, and simulator log for every row.
 
-This paper reframes the study around a genuine simulator-in-the-loop task: a process corner is absent from the base training set; acquisition sees only the features of 96 new candidates; selected points are submitted to ngspice; and an independent validation set is used only after each update. The same 96-candidate pool is eventually completed to provide a measured exhaustive reference. This design supports four contributions:
+This paper reframes the study around a genuine simulator-in-the-loop task: a process corner is absent from the base training set; acquisition sees only the features of 96 new candidates; selected points are submitted to ngspice; and an independent validation set is used only after each update. The same candidate pool is eventually completed to provide a measured exhaustive reference. A second experiment then repeats the protocol on released GF180MCU standard-cell CDLs rather than only author-defined topology templates. This design supports four contributions:
 
 \begin{enumerate}
 \item a deterministic GF180MCU/ngspice generation protocol that makes the statistical-mode setting explicit and auditable;
 \item a validation-blind unseen-corner support loop with fresh SPICE calls, retained netlists and logs, five acquisition baselines, five seeds, and three held-out corners;
-\item a direct comparison between 24- and 48-query budgets and a measured 96-query reference, including query and wall-time savings; and
-\item a negative result showing that uncertainty-only acquisition can be unstable, whereas explicit space coverage and cell balance provide a dependable engineering default in this setting.
+\item an external test on 16 released-CDL variants, comprising eight logic families and two drive strengths, together with a stopping rule locked before evaluation on untouched confirmation pools; and
+\item two boundary-setting results: the 48-query controlled-stage budget is not universally transferable, and fresh SPICE delay preserves official Liberty ordering despite a measurable absolute bias.
 \end{enumerate}
 
-The method is deliberately bounded. It targets early transistor-level exploration of four controlled combinational-cell arcs. It does not replace sign-off simulation, layout-parasitic extraction, all timing arcs, leakage-state characterization, or complete Liberty generation.
+The method is deliberately bounded. It targets early transistor-level exploration of controlled and released combinational-cell arcs within one PDK. It does not replace sign-off simulation, layout-parasitic extraction, all timing arcs, leakage-state characterization, or complete Liberty generation.
 
 \section{Related work and study position}
 
-Machine-learning surrogates are widely used for expensive circuit-response prediction and design-space search \cite{Fayazi_AI_AMS_Review_2021,Afacan_ML_AnalogRF_Review_2021,Mina_ML_AnalogIC_Review_2022}. In standard-cell characterization, prior work has addressed library modeling, design-technology co-optimization, reliability, knowledge transfer, and graph representations \cite{Klemme_CellLib_ML_DTCO_ICCAD_2020,Klemme_Reliability_CellLib_TCASI_2021,Tang_KnowledgeTransfer_CellLib_MEJO_2025,Ma_GNN_CellLib_Integration_2025}. Those studies motivate learning-assisted characterization, but often pursue broader cell-library coverage or more advanced representations than the controlled tabular experiment reported here.
+Machine-learning surrogates are widely used for expensive circuit-response prediction and design-space search \cite{Fayazi_AI_AMS_Review_2021,Afacan_ML_AnalogRF_Review_2021,Mina_ML_AnalogIC_Review_2022}. In standard-cell characterization, prior work has addressed library modeling, design-technology co-optimization, reliability, knowledge transfer, and graph representations \cite{Klemme_CellLib_ML_DTCO_ICCAD_2020,Klemme_Reliability_CellLib_TCASI_2021,Tang_KnowledgeTransfer_CellLib_MEJO_2025,Ma_GNN_CellLib_Integration_2025}. Those studies motivate learning-assisted characterization. Our complementary focus is the experimental protocol needed to demonstrate that a surrogate actually reduces fresh SPICE work and that a budget selected on controlled circuits remains credible on released library cells.
 
 Sequential design and active learning choose the next expensive label using the current model or the geometry of the unlabeled pool \cite{Settles_ActiveLearning_2009}. In circuit optimization, Bayesian and multi-fidelity methods commonly combine prediction uncertainty, expected improvement, or fidelity-aware cost \cite{Lyu_Bayesian_Analog_2018,Zhang_MultiFidelity_BO_DAC_2019,He_Batched_MultiFidelity_BO_TCAD_2023}. Our purpose is narrower. We do not claim a new acquisition theory. We test whether a simple policy can be executed as an auditable SPICE loop and how much measured work it saves relative to completing the same candidate pool.
 
@@ -72,7 +72,7 @@ This distinction matters for journal positioning. Model-zoo results are retained
 
 \subsection{PDK, simulator, and statistical-mode control}
 
-All publication-eligible simulations use ngspice 46 and the GF180MCU primitive-device model file \texttt{sm141064.ngspice} \cite{Google_GF180MCU_PDK_GitHub,GF180MCU_ReadTheDocs_CustomDesign,GF180MCU_Model_sm141064,Ngspice_Manual}. The local PDK checkout corresponds to commit \texttt{de3240d}; the full hash is given in the repository reference. The NMOS and PMOS devices use the \texttt{nmos\_3p3} and \texttt{pmos\_3p3} models.
+All publication-eligible simulations use ngspice 46 and the GF180MCU primitive-device model file \texttt{sm141064.ngspice} \cite{Google_GF180MCU_PDK_GitHub,GF180MCU_ReadTheDocs_CustomDesign,GF180MCU_Model_sm141064,Ngspice_Manual}. The local PDK checkout corresponds to commit \texttt{de3240d}; the primitive-model and 7-track standard-cell submodules correspond to commits \texttt{9f992d5} and \texttt{43beb45}, respectively \cite{GF180MCU_ReadTheDocs_StdCells_7Track}. The full hashes are given in the repository references. The controlled templates use \texttt{nmos\_3p3} and \texttt{pmos\_3p3}. The released-cell experiment instantiates official cell CDLs and preserves their transistor connectivity, widths, and lengths while mapping their 5-V device symbols to the compatible open ngspice model wrappers described below.
 
 The GF180MCU design include enables both global and mismatch statistical switches by default. Each generated publication netlist therefore inserts
 
@@ -94,7 +94,7 @@ and average switching supply power over the defined transient measurement window
 
 \begin{table}[t]
 \centering
-\caption{Deterministic datasets and simulator-in-the-loop protocol.}
+\caption{Controlled-stage deterministic datasets and simulator-in-the-loop protocol.}
 \label{tab:protocol}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lllll}
@@ -117,6 +117,24 @@ Variable ranges & \multicolumn{4}{l}{$W_n$: 0.517--4.990~$\mu$m; ratio: 1.503--2
 The primary dataset contains 320 successful rows generated with Latin hypercube seed 20260530. Each cell contributes 80 rows. The corner counts are 104 ff, 108 ss, and 108 typical rows. The independent validation dataset contains 480 successful rows generated with seed 20260602, with 120 rows per cell and 160 rows per corner. No legacy or externally sourced table is included in the reported training, support, or evaluation sets.
 
 The independent validation set is not cross-PDK or cross-simulator validation. Both datasets use the same PDK, simulator, device models, and circuit templates. Independence here means a different design-point sample, sampling seed, netlist directory, and log directory within the same controlled flow.
+
+\section{Released-library external validation}
+
+\subsection{Official CDLs and independent datasets}
+
+To test whether conclusions from author-defined templates survive a more realistic topology distribution, we construct a second experiment from the released GF180MCU 7-track standard-cell CDLs. The set contains INV, NAND2, NOR2, XOR2, AOI21, OAI21, MUX2, and NAND3 families at drive strengths 1 and 4, giving 16 cell variants. One sensitized input arc is used per family. For the ngspice flow, official CDL instances of \texttt{nfet\_05v0} and \texttt{pfet\_05v0} are mapped to the open \texttt{nmos\_6p0} and \texttt{pmos\_6p0} subcircuit wrappers while preserving transistor connectivity, width, and length. This is a released-topology external test within the same PDK, not a claim of bit-identical reproduction of the library provider's characterization deck.
+
+Independent primary and validation datasets contain 576 successful rows each, generated with seeds 20260717 and 20260731. Each dataset contains 36 points per variant and 192 points per process corner. Besides voltage, temperature, input slew, load, and corner, the model receives family, variant, drive strength, sensitized arc, input count, transistor count, and aggregate NMOS/PMOS width. The joint sampled range is 1.62--1.98~V, $-40$--125~$^\circ$C, 0.02--12~ns input slew, and 0.001--0.206~pF load.
+
+The online study uses five additional pool seeds and three held-out corners. Each pool contains six unseen points for every variant, or 96 candidates. A variant-balanced farthest-first order is generated from feature geometry, and support is added in 16-query batches so that every variant receives one point per batch. Completing all 15 pools requires 1440 fresh, successful SPICE calls and supplies the measured references used below.
+
+\subsection{Validation-blind stopping rule}
+
+The released-library stage adds an operational stopping rule that never observes validation labels. After each batch, it evaluates three quantities available during deployment: normalized prequential delay error on the just-measured batch, normalized change in the model's predictions over the remaining pool, and feature-space coverage radius relative to its initial value. Seeds 0--2 (nine corner pools) are used to choose thresholds. A candidate rule must keep at least eight of nine development runs within 0.02 $R^2$ of the full reference and every development run within 0.05. The selected rule requires a minimum budget of 64, prequential normalized MAE no greater than 0.25, prediction change no greater than 0.05, and coverage ratio no greater than 0.50 for two consecutive batches. These thresholds are then locked before evaluation on seeds 3--4 (six confirmation pools).
+
+\subsection{Partial Liberty compatibility check}
+
+As a separate engineering check, released Liberty delay surfaces are compared with fresh simulations of the corresponding released CDLs. For each of 16 variants and three matched PVT files, the low, middle, and high indices of both the ten-point slew axis and ten-point load axis form nine comparison points, giving 432 simulations. We report rank and absolute agreement separately. This experiment is intentionally partial: it does not reconstruct all arcs, constraints, leakage states, internal power groups, waveform settings, or extracted parasitics of a complete characterization flow.
 
 \section{Simulator-in-the-loop corner calibration}
 
@@ -237,11 +255,44 @@ Support & Query reduction & Time reduction & Delay $R^2$ & Gap to reference & Wo
 
 For each four-query batch, predictions are recorded before its SPICE labels are added. This prequential error is observable during operation and does not use the independent validation labels. Across 180 batches, prequential delay MAE correlates negatively with external delay $R^2$ (Spearman $\rho=-0.3869$, $p=8.09\times10^{-8}$) and external worst-cell delay $R^2$ ($\rho=-0.3352$, $p=4.22\times10^{-6}$). The direction is useful, but the magnitude is only moderate. We therefore treat prequential error as a diagnostic for suspicious batches, not as a validated automatic stopping rule.
 
+\subsection{The protocol transfers to released standard-cell CDLs}
+
+All 1152 independently generated released-CDL rows and all 1440 online candidate simulations complete successfully with the statistical switches disabled. The released-library task is materially harder than the controlled four-topology stage. Across 15 seed-corner pools, median delay $R^2$ is 0.2171 without target-corner support, 0.8258 at 32 queries, 0.8684 at 48, 0.9028 at 80, and 0.9070 after all 96 candidates are measured. Median worst-family $R^2$ rises from $-0.1009$ at zero support to 0.3818 at 48 and 0.6932 at 96. Table~\ref{tab:released-budgets} and Fig.~\ref{fig:released-validation}a show the complete trajectory.
+
+\begin{table}[t]
+\centering
+\caption{Released-CDL external-validation budgets over 15 seed-corner pools. Values are pooled medians.}
+\label{tab:released-budgets}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{rrrrr}
+\toprule
+Support & Delay $R^2$ & Gap to reference & Worst-family $R^2$ & Measured time (s) \\
+\midrule
+0 & 0.2171 & 0.6863 & $-0.1009$ & 0.00 \\
+32 & 0.8258 & 0.0986 & 0.1697 & 61.09 \\
+48 & 0.8684 & 0.0451 & 0.3818 & 92.58 \\
+80 & 0.9028 & 0.0106 & 0.6489 & 157.25 \\
+96 reference & 0.9070 & 0 & 0.6932 & 185.60 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+This transfer test changes the interpretation of the controlled result. A fixed 48-query budget is within 0.02 of the reference in only one of six untouched confirmation pools; its median gap is 0.0427 and maximum gap is 0.1219. The validation-blind rule instead stops at a median of 88 queries. Five of six confirmation runs are within 0.02, all six are within 0.05, and the maximum gap is 0.0207. The corresponding median delay $R^2$ is 0.9036 and median worst-family $R^2$ is 0.7348. Thus, the stopping rule is conservative and yields a median query reduction of only 8.3\%, but it avoids presenting the successful controlled-stage half-budget as a universal constant (Fig.~\ref{fig:released-validation}b).
+
+The 432-point Liberty comparison provides a different form of evidence. Fresh ngspice delay and the released Liberty table values have Spearman $\rho=0.9900$, Pearson $r=0.9916$, and $R^2=0.9460$ (Fig.~\ref{fig:released-validation}c). However, the median absolute percentage error is 18.58\%, and the median SPICE-to-Liberty delay ratio is 0.814. The strong ordering agreement supports use for early ranking, whereas the absolute bias confirms that the present deck is not a replacement for the provider's complete characterization conditions.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig3_official_library_validation.pdf}
+\caption{External validation on released GF180MCU standard-cell CDLs. (a) Median independent-validation delay $R^2$ versus measured support for the three held-out corners; bands show the interquartile range over five pool seeds. (b) Untouched confirmation pools compare the validation-blind stopping budget with the resulting gap to each measured 96-query reference. Dashed lines mark gaps of 0.02 and 0.05. (c) Fresh ngspice delay versus official Liberty delay at 432 matched cell--PVT--slew--load points. The log--log identity line exposes the absolute offset while rank correlation quantifies ordering agreement.}
+\label{fig:released-validation}
+\end{figure}
+
 \section{Discussion}
 
 \subsection{What changes relative to an ML benchmark}
 
-The central result is no longer that one regressor achieves a larger random-split score. Every online support label is produced by a retained simulator call, validation labels are isolated from acquisition, and budget savings are measured against the same pool completed by SPICE. This design directly addresses whether the workflow reduces simulation effort under an unseen-corner stress test.
+The central result is no longer that one regressor achieves a larger random-split score. Every online support label is produced by a retained simulator call, validation labels are isolated from acquisition, and budget savings are measured against the same pool completed by SPICE. The controlled stage establishes repeatability and matched-policy behavior; the released-CDL stage asks whether that behavior survives larger topology and drive-strength diversity. This evidence chain directly addresses simulation allocation under an unseen-corner stress test.
 
 The configuration audit is equally important. Open PDKs improve reproducibility only when their operating controls are recorded. Global and mismatch variation should not be disabled universally; they are essential for variation analysis. They are disabled here because the estimand is deterministic corner response. A future statistical-characterization study should instead expose random seeds, repeat counts, and distributional targets as first-class variables.
 
@@ -253,17 +304,19 @@ This finding should not be generalized to all uncertainty acquisition. Gaussian-
 
 \subsection{Practical interpretation}
 
-The 96-point candidate pool is an early-exploration reference, not a complete characterization grid. The measured time per 96-query reference is about 59~s in this small transistor-level flow. Production characterization would involve more arcs, loads, slews, states, corners, and extracted views, so absolute cost would be much larger. The defensible extrapolation is qualitative: a validation-blind support loop can decide where to spend a bounded number of new simulations, while final selected conditions remain subject to the intended sign-off flow.
+The 96-point candidate pool is an early-exploration reference, not a complete characterization grid. The measured time per controlled 96-query reference is about 59~s, whereas the released-CDL pools have a median of 185.6~s because they contain larger official topologies and broader slew/load ranges. Production characterization would involve more arcs, loads, slews, states, corners, and extracted views, so absolute cost would be much larger. The defensible extrapolation is qualitative: a validation-blind support loop can decide where to spend a bounded number of new simulations, while final selected conditions remain subject to the intended sign-off flow.
+
+The two stages also show why a fixed budget should not be elevated into a general rule. Forty-eight queries are effective for the controlled templates but unreliable in the released-library confirmation pools. The locked stopping rule is intentionally conservative: its 8.3\% median saving is modest, yet it substantially improves gap control without consulting validation labels. A practical implementation can relax or tighten its thresholds according to the cost of an additional simulation and the acceptable risk of stopping early.
 
 \subsection{Limitations}
 
-The study uses one PDK, one simulator version, one primitive model family, four controlled combinational cells, and pre-layout netlists. Candidate and validation data come from the same generation distribution. The method has not been tested on sequential cells, AOI/OAI structures, all input-state arcs, leakage tables, extracted parasitics, or another PDK. The acquisition policy is deliberately simple and is not claimed as algorithmically novel. Five candidate-pool seeds provide matched comparisons, but broader process and topology diversity is needed before asserting general corner-calibration behavior.
+The study uses one PDK, one simulator version, and pre-layout netlists. Its released-library external test expands coverage to eight combinational families and two drive strengths, including AOI21, OAI21, and MUX2, but still evaluates only one sensitized arc per family. It does not cover sequential cells, every input-state arc, leakage and internal-power tables, timing constraints, extracted parasitics, or another PDK. Candidate and validation data remain within the same PDK and generation flow.
 
-The study also does not show that 48 queries are universally optimal. It shows that, for these 15 measured pools, 48 queries retain a small median gap to completing 96 candidates. A deployment should set its budget from application-specific error tolerance and should retain SPICE verification of final design points.
+The Liberty comparison is a 432-point surface compatibility check, not full characterization. Its 18.58\% median absolute percentage error indicates that waveform, deck, and parasitic differences still matter despite excellent rank agreement. The acquisition policy is deliberately simple and is not claimed as algorithmically novel. The stopping confirmation contains six pools; one exceeds the prespecified 0.02 gap by 0.0007, although all remain within 0.05. Cross-PDK testing and a larger locked confirmation cohort are therefore needed before asserting general corner-calibration behavior.
 
 \section{Conclusion}
 
-This paper presents a deterministic, provenance-controlled simulator-in-the-loop protocol for unseen-corner support in GF180MCU standard-cell exploration. Explicit statistical-switch control eliminates unintended run-to-run variation. Fresh ngspice queries, validation-label isolation, matched strategy comparisons, and measured exhaustive references convert a static surrogate exercise into a simulation-allocation study. Cell-balanced space filling raises pooled median delay $R^2$ from 0.4825 without same-corner support to 0.8729 with 48 queries. Relative to completing all 96 candidates, this budget cuts calls by 50\% and measured time by 51.3\%, while retaining a median delay-$R^2$ gap of 0.012. Ordinary space filling performs similarly, and uncertainty-only selection is less reliable. The resulting contribution is an auditable engineering protocol and a reproducible negative-and-positive evidence package, bounded to early pre-layout exploration rather than sign-off characterization.
+This paper presents a deterministic, provenance-controlled simulator-in-the-loop protocol for unseen-corner support in GF180MCU standard-cell exploration. In the controlled stage, cell-balanced space filling reaches a median delay $R^2$ of 0.8729 with 48 of 96 queries and a median gap of 0.0120 to the measured reference. The released-CDL stage extends the evidence to eight logic families, two drive strengths, 15 new pools, and 1440 fresh simulations. It also supplies the more important boundary result: a fixed half-budget does not transfer reliably. A validation-blind rule locked on separate development pools stops conservatively at a median of 88 queries, keeping five of six confirmation runs within 0.02 and all within 0.05 of their references. Fresh SPICE delay additionally preserves official Liberty ordering over 432 matched points ($\rho=0.9900$), while an 18.58\% median absolute error exposes the remaining characterization mismatch. The contribution is therefore an auditable allocation and stopping protocol with both positive and negative external evidence, bounded to same-PDK pre-layout exploration rather than sign-off or complete Liberty generation.
 
 \section*{CRediT authorship contribution statement}
 
@@ -279,7 +332,7 @@ This research received no specific grant from any funding agency in the public, 
 
 \section*{Data and code availability}
 
-The live project repository is available at \url{https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej}. The preceding reproducibility release is archived at \url{https://doi.org/10.5281/zenodo.20524583}. The deterministic datasets, online query records, exhaustive-reference records, netlists, logs, analysis scripts, and figure source data introduced in this extension will be included in a new versioned release before submission of this manuscript.
+The live project repository is available at \url{https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej}. The preceding reproducibility release is archived at \url{https://doi.org/10.5281/zenodo.20524583}. A new versioned release will add the released-CDL primary and validation data, 1440 online query records, stopping decisions, 432-point Liberty comparison, retained netlists and logs, analysis scripts, and figure source data before submission of this revision.
 
 \section*{Acknowledgments}
 
