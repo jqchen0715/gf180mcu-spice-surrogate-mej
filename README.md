@@ -1,15 +1,15 @@
-# GF180MCU SPICE Surrogate Reproducibility Package
+# Cross-PDK SPICE Protocol Reproducibility Package
 
 This repository contains the data, scripts, result summaries, generated figures,
 and provenance notes supporting the deterministic simulator-in-the-loop manuscript:
 
-**A Deterministic Simulator-in-the-Loop Protocol for Sample-Efficient GF180MCU
+**Cross-PDK Validation of a Deterministic Simulator-in-the-Loop Protocol for
 Standard-Cell Corner Calibration**
 
-The study targets early design-space exploration for both controlled
-transistor-level topologies and released GF180MCU standard-cell CDLs using
-ngspice. It is not a sign-off flow, a production standard-cell library
-generator, or a full Liberty characterization package.
+The study targets early design-space exploration using controlled GF180MCU
+topologies and released GF180MCU and SKY130 standard-cell netlists in ngspice.
+It is not a sign-off flow, a production standard-cell library generator, or a
+full Liberty characterization package.
 
 ## Current Main Evidence
 
@@ -48,6 +48,20 @@ span eight combinational families and drive strengths 1 and 4. Exact commands,
 PDK commits, and interpretation boundaries are documented in
 `RELEASED_LIBRARY_REPRODUCIBILITY.md`.
 
+The cross-PDK protocol replication is under:
+
+```text
+results/sky130_cross_pdk_replication/
+```
+
+It contains two independent 576-row SKY130 datasets and 15 completed 96-point
+online pools, for 2,592 successful SKY130 calls. The stopping rule was fixed on
+GF180MCU before these outcomes were evaluated. Without threshold retuning, all
+15 SKY130 pools remain within a prespecified delay-R2 gap of 0.02, at a median
+budget of 80 rather than 96 calls. The minimal 35 MB sparse-PDK installation,
+exact commits, commands, and claim boundaries are documented in
+`SKY130_CROSS_PDK_REPRODUCIBILITY.md`.
+
 The current manuscript and numeric audit are:
 
 ```text
@@ -76,6 +90,10 @@ experiments/
   validate_library_online_stopping.py
   liberty_surface_crosscheck.py
   plot_official_library_validation.py
+  generate_sky130_library_spice_datasets.py
+  sky130_cross_pdk_protocol_replication.py
+  audit_sky130_cross_pdk_replication.py
+  plot_cross_pdk_replication.py
   sci_revision_enhanced_evaluation.py
   v2_baseline_transfer.py
   source_aware_ablation.py
@@ -88,6 +106,7 @@ experiments/
 results/
   online_spice_deterministic/
   gf180_library_external_validation/
+  sky130_cross_pdk_replication/
   deterministic_sci_revision/
   deterministic_v3_scale_validation/
   deterministic_robustness/
@@ -113,6 +132,7 @@ manuscript/
 spice_v2/
   generate_spice_dataset.py
   gf180_library_cells.py
+  sky130_library_cells.py
   schema.md
   status.md
   netlists/
@@ -121,6 +141,7 @@ spice_v2/
   logs_v3_480/
 
 tools/
+  install_sky130_minimal.sh
   audit_deterministic_online_manuscript.py
   check_manuscript_numbers.py
 
@@ -129,11 +150,11 @@ manuscript_audits/
   manuscript_numeric_consistency_audit.md
 ```
 
-The local GF180MCU PDK checkout is not redistributed here. Users should obtain
-the PDK and primitive-library files from the official repositories cited in the
-manuscript. The reported simulations used ngspice 46 and the GF180MCU primitive
-model file `sm141064.ngspice`; the manuscript records the exact local PDK commit
-used for the reported data.
+The local PDK checkouts are not redistributed here. Users should obtain the
+GF180MCU inputs from the repositories cited in the manuscript. For SKY130, the
+provided sparse installer retrieves only the required device models and eight
+cell families at the exact reported commits. All reported simulations used
+ngspice 46.
 
 ## Quick Start
 
@@ -150,6 +171,7 @@ Run the current publication-facing numeric audit from the repository root:
 ```bash
 python tools/audit_deterministic_online_manuscript.py
 python tools/audit_official_library_extension.py
+python experiments/audit_sky130_cross_pdk_replication.py
 ```
 
 For the deterministic data-generation and simulator-in-the-loop commands, see:
@@ -157,6 +179,7 @@ For the deterministic data-generation and simulator-in-the-loop commands, see:
 ```text
 DETERMINISTIC_ONLINE_REPRODUCIBILITY.md
 RELEASED_LIBRARY_REPRODUCIBILITY.md
+SKY130_CROSS_PDK_REPRODUCIBILITY.md
 ```
 
 ## Legacy Package Note
@@ -180,10 +203,9 @@ Please cite the archived Zenodo release:
 https://doi.org/10.5281/zenodo.20524583
 ```
 
-The DOI above identifies the preceding archived package. Before submitting the
-deterministic online manuscript, create a new GitHub release and a new Zenodo
-version containing the files listed in
-`DETERMINISTIC_ONLINE_REPRODUCIBILITY.md`.
+The DOI above identifies the preceding archived package. Create a new GitHub
+release and Zenodo version for the cross-PDK evidence before citing a versioned
+archive of the present package.
 
 The live GitHub repository is:
 

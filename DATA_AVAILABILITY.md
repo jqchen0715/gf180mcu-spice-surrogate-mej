@@ -12,10 +12,10 @@ The live GitHub repository is:
 https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej
 ```
 
-The deterministic simulator-in-the-loop extension is prepared in this live
-repository. Before manuscript submission, create a new GitHub release and a new
-Zenodo version. The resulting version DOI should replace the preceding DOI in
-the final manuscript.
+The deterministic cross-PDK simulator-in-the-loop extension is prepared in this
+live repository. Before manuscript submission, create a new GitHub release and
+a new Zenodo version. The resulting version DOI should replace the preceding
+DOI in the final manuscript.
 
 The repository includes:
 
@@ -36,13 +36,21 @@ The repository includes:
 - `experiments/liberty_surface_crosscheck.py`
 - `results/gf180_library_external_validation/`
 - `manuscript_audits/mej_official_library_extension_numeric_audit.md`
+- `spice_v2/sky130_library_cells.py`
+- `experiments/generate_sky130_library_spice_datasets.py`
+- `experiments/sky130_cross_pdk_protocol_replication.py`
+- `experiments/audit_sky130_cross_pdk_replication.py`
+- `results/sky130_cross_pdk_replication/`
+- `SKY130_CROSS_PDK_REPRODUCIBILITY.md`
 
 The prepared repository copy contains the released-library netlists and logs in
 addition to the structured tables. The versioned Zenodo archive should retain
 these records and the controlled-stage per-query provenance. See
 `DETERMINISTIC_ONLINE_REPRODUCIBILITY.md` and
-`RELEASED_LIBRARY_REPRODUCIBILITY.md` for the complete release checklist.
+`RELEASED_LIBRARY_REPRODUCIBILITY.md` and
+`SKY130_CROSS_PDK_REPRODUCIBILITY.md` for the complete release checklist.
 
-The GF180MCU PDK checkout is not redistributed. The manuscript cites the
-official repositories and reports the exact local PDK commit and model-file
-provenance used for the simulations.
+The GF180MCU and SKY130 PDK checkouts are not redistributed. The manuscript
+cites the official repositories and reports exact commits and model-file
+provenance. `tools/install_sky130_minimal.sh` installs the required SKY130 paths
+as a sparse checkout.

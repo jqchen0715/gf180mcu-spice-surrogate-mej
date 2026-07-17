@@ -2,8 +2,9 @@
 
 Updated: 2026-07-15
 
-This document supports the manuscript **A Deterministic Simulator-in-the-Loop
-Protocol for Sample-Efficient GF180MCU Standard-Cell Corner Calibration**.
+This document describes the controlled GF180MCU stage of the manuscript
+**Cross-PDK Validation of a Deterministic Simulator-in-the-Loop Protocol for
+Standard-Cell Corner Calibration**.
 
 ## 1. Environment
 

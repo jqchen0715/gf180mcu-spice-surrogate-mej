@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "checks": {
+    "primary_576_all_ok": true,
+    "validation_576_all_ok": true,
+    "sixteen_variants_each_dataset": true,
+    "eight_families_each_dataset": true,
+    "balanced_corner_counts": true,
+    "fifteen_complete_online_pools": true,
+    "online_all_ok": true,
+    "online_unique_sample_ids": true,
+    "candidate_features_1440": true,
+    "trajectory_15_by_7_budgets": true,
+    "locked_rule_unchanged": true,
+    "sky130_not_used_for_rule_selection": true,
+    "locked_rule_15_runs": true,
+    "all_locked_gaps_le_0p02": true,
+    "all_locked_gaps_le_0p05": true
+  },
+  "failed_checks": [],
+  "publication_sky130_spice_calls": 2592,
+  "complete_study_spice_calls_after_sky130": 10093,
+  "sky130_primitive_commit": "403964dc7f9cca5ec1a8cc7b4f2a6f532b781676",
+  "sky130_standard_cell_commit": "9cb2d7cb8ed4619094263614039a61b6b2d22a88",
+  "ngspice_version": "46",
+  "primary_rows": 576,
+  "validation_rows": 576,
+  "online_rows": 1440,
+  "locked_rule_summary": {
+    "runs": 15,
+    "median_stop_budget": 80.0,
+    "median_query_reduction_pct": 16.666666666666668,
+    "gap_le_0p02_rate": 1.0,
+    "gap_le_0p05_rate": 1.0,
+    "median_delay_r2_gap_to_full": 0.0,
+    "maximum_delay_r2_gap_to_full": 0.014627163482930583,
+    "median_delay_r2": 0.9085547609759672,
+    "median_worst_family_delay_r2": 0.7235232119276641,
+    "median_worst_variant_delay_r2": 0.1227883443753629
+  },
+  "sampled_ranges": {
+    "Vdd": {
+      "minimum": 1.6201854033858205,
+      "maximum": 1.9799714019265808
+    },
+    "Temp": {
+      "minimum": -39.94964797670704,
+      "maximum": 124.9773178092188
+    },
+    "slew_ns": {
+      "minimum": 0.0334564209682287,
+      "maximum": 11.996873063775247
+    },
+    "Cload_pF": {
+      "minimum": 0.001017201997523,
+      "maximum": 0.2056264426497945
+    }
+  }
+}

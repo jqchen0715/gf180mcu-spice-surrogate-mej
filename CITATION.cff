@@ -1,17 +1,18 @@
 cff-version: 1.2.0
 message: "If you use this dataset or code, please cite the associated manuscript and this repository."
-title: "Deterministic Simulator-in-the-Loop GF180MCU Corner Calibration Package"
+title: "Cross-PDK Simulator-in-the-Loop Standard-Cell Calibration Package"
 authors:
   - family-names: "Chen"
     given-names: "Jiaqing"
   - family-names: "Shao"
     given-names: "Feng"
-version: "0.4.0-pre"
+version: "0.5.0-pre"
 date-released: "2026-07-17"
 repository-code: "https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej"
-abstract: "Deterministic GF180MCU/ngspice datasets, genuine simulator-in-the-loop query records, measured exhaustive references, released-standard-cell CDL external validation, validation-blind stopping, partial Liberty comparison, scripts, figures, and provenance notes for unseen-corner standard-cell calibration."
+abstract: "Deterministic GF180MCU and SKY130 ngspice datasets, simulator-in-the-loop query records, measured references, released-standard-cell validation, a GF180MCU-locked stopping rule replicated on SKY130 without retuning, a partial Liberty comparison, scripts, figures, and provenance notes for unseen-corner standard-cell calibration."
 keywords:
   - GF180MCU
+  - SKY130
   - ngspice
   - standard-cell exploration
   - surrogate modeling

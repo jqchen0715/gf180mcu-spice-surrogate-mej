@@ -16,7 +16,7 @@
 
 \begin{frontmatter}
 
-\title{A Deterministic Simulator-in-the-Loop Protocol for Sample-Efficient GF180MCU Standard-Cell Corner Calibration}
+\title{Cross-PDK Validation of a Deterministic Simulator-in-the-Loop Protocol for Standard-Cell Corner Calibration}
 
 \author[aff1]{Jiaqing Chen\corref{cor1}}
 \ead{Jq\_Chen0715@buaa.edu.cn}
@@ -32,11 +32,11 @@ postcode={100191},
 country={China}}
 
 \begin{abstract}
-An offline regression benchmark does not establish that a surrogate reduces new standard-cell SPICE work. We therefore study unseen-corner calibration as a deterministic simulator-in-the-loop allocation problem. A controlled GF180MCU experiment uses independently sampled primary and evaluation-only datasets for four logic topologies; five acquisition policies then request fresh ngspice labels from 15 feature-only candidate pools. Cell-balanced space filling reaches a median delay $R^2$ of 0.8729 with 48 of 96 queries, leaving a 0.0120 gap to the measured exhaustive reference while reducing calls by 50\% and measured time by 51.3\%. The protocol is then stress-tested on released GF180MCU standard-cell CDLs spanning eight logic families, two drive strengths, and three held-out corners. Across 15 new pools and 1440 successful simulator calls, the corresponding median $R^2$ rises from 0.2171 without target-corner support to 0.8684 at 48 queries and 0.9070 at 96 queries. A stopping rule locked on nine development pools and evaluated on six untouched confirmation pools stops at a median budget of 88; five of six runs remain within 0.02 and all remain within 0.05 $R^2$ of their measured references. A separate 432-point comparison with official Liberty tables preserves delay ordering (Spearman $\rho=0.9900$), although the 18.6\% median absolute percentage error exposes non-negligible characterization-condition bias. The contribution is an auditable allocation and stopping protocol with a released-library external test, bounded to same-PDK pre-layout exploration rather than complete Liberty characterization or sign-off.
+An offline regression benchmark does not establish that a surrogate reduces new standard-cell SPICE work. We therefore formulate unseen-corner calibration as a deterministic simulator-in-the-loop allocation problem. A controlled GF180MCU study first compares five acquisition policies on 15 feature-only candidate pools. Cell-balanced space filling reaches a median delay $R^2$ of 0.8729 with 48 of 96 queries, leaving a 0.0120 gap to the measured reference while reducing calls by 50\%. The protocol is then tested on released GF180MCU standard-cell CDLs spanning eight logic families, two drive strengths, and three corners. A validation-blind stopping rule is locked on nine GF180MCU development pools and evaluated without retuning on six GF180MCU confirmation pools and 15 external SKY130 pools. It stops at median budgets of 88 and 80, respectively. Five of six GF180MCU runs and all 15 SKY130 runs remain within 0.02 $R^2$ of their measured 96-call references; the maximum SKY130 gap is 0.0146. Fixed 48- and 64-call budgets meet the same criterion in only 1/15 and 6/15 SKY130 pools. The complete evidence package contains 10,093 successful SPICE calls. A separate 432-point GF180MCU Liberty comparison preserves delay ordering (Spearman $\rho=0.9900$) while exposing an 18.6\% median absolute percentage error. The contribution is a reproducible cross-PDK protocol validation, bounded to PDK-specific retraining and pre-layout exploration rather than zero-shot model transfer, complete Liberty characterization, or sign-off.
 \end{abstract}
 
 \begin{keyword}
-standard cells \sep GF180MCU \sep SPICE simulation \sep sequential experimental design \sep process-corner calibration \sep Liberty characterization \sep reproducibility
+standard cells \sep GF180MCU \sep SKY130 \sep SPICE simulation \sep sequential experimental design \sep process-corner calibration \sep cross-PDK validation
 \end{keyword}
 
 \end{frontmatter}
@@ -49,16 +49,16 @@ Learning-assisted circuit design has been studied in analog, mixed-signal, and s
 
 The third issue is concrete in the GF180MCU flow used here. The included design configuration enables global and mismatch statistical switches by default. If these switches are not overridden, two nominally identical netlists can produce different values while the resulting table is described as a deterministic PVT study. That behavior may be appropriate for variation analysis, but it confounds a corner-calibration experiment unless random draws and seeds are modeled explicitly. We therefore force both switches off and retain the configuration, model path, netlist, and simulator log for every row.
 
-This paper reframes the study around a genuine simulator-in-the-loop task: a process corner is absent from the base training set; acquisition sees only the features of 96 new candidates; selected points are submitted to ngspice; and an independent validation set is used only after each update. The same candidate pool is eventually completed to provide a measured exhaustive reference. A second experiment then repeats the protocol on released GF180MCU standard-cell CDLs rather than only author-defined topology templates. This design supports four contributions:
+This paper reframes the study around a genuine simulator-in-the-loop task: a process corner is absent from the base training set; acquisition sees only the features of 96 new candidates; selected points are submitted to ngspice; and an independent validation set is used only after each update. The same candidate pool is eventually completed to provide a measured reference. The protocol is first transferred from author-defined templates to released GF180MCU standard-cell CDLs and then replicated on released SKY130 cells without retuning the stopping rule. This design supports four contributions:
 
 \begin{enumerate}
 \item a deterministic GF180MCU/ngspice generation protocol that makes the statistical-mode setting explicit and auditable;
 \item a validation-blind unseen-corner support loop with fresh SPICE calls, retained netlists and logs, five acquisition baselines, five seeds, and three held-out corners;
-\item an external test on 16 released-CDL variants, comprising eight logic families and two drive strengths, together with a stopping rule locked before evaluation on untouched confirmation pools; and
-\item two boundary-setting results: the 48-query controlled-stage budget is not universally transferable, and fresh SPICE delay preserves official Liberty ordering despite a measurable absolute bias.
+\item a stopping rule developed on released GF180MCU cells, locked before six same-PDK confirmation pools and 15 external SKY130 pools, with every SKY130 pool retained as a measured 96-call reference; and
+\item two boundary-setting results: fixed budgets do not transfer reliably across stages or PDKs, and fresh GF180MCU SPICE delay preserves official Liberty ordering despite a measurable absolute bias.
 \end{enumerate}
 
-The method is deliberately bounded. It targets early transistor-level exploration of controlled and released combinational-cell arcs within one PDK. It does not replace sign-off simulation, layout-parasitic extraction, all timing arcs, leakage-state characterization, or complete Liberty generation.
+The method is deliberately bounded. It targets early transistor-level exploration of controlled and released combinational-cell arcs. Cross-PDK validation means replication of a fixed allocation and stopping protocol with PDK-specific training data; it does not mean direct transfer of one fitted regression model between technologies. The method does not replace sign-off simulation, layout-parasitic extraction, all timing arcs, leakage-state characterization, or complete Liberty generation.
 
 \section{Related work and study position}
 
@@ -72,7 +72,9 @@ This distinction matters for journal positioning. Model-zoo results are retained
 
 \subsection{PDK, simulator, and statistical-mode control}
 
-All publication-eligible simulations use ngspice 46 and the GF180MCU primitive-device model file \texttt{sm141064.ngspice} \cite{Google_GF180MCU_PDK_GitHub,GF180MCU_ReadTheDocs_CustomDesign,GF180MCU_Model_sm141064,Ngspice_Manual}. The local PDK checkout corresponds to commit \texttt{de3240d}; the primitive-model and 7-track standard-cell submodules correspond to commits \texttt{9f992d5} and \texttt{43beb45}, respectively \cite{GF180MCU_ReadTheDocs_StdCells_7Track}. The full hashes are given in the repository references. The controlled templates use \texttt{nmos\_3p3} and \texttt{pmos\_3p3}. The released-cell experiment instantiates official cell CDLs and preserves their transistor connectivity, widths, and lengths while mapping their 5-V device symbols to the compatible open ngspice model wrappers described below.
+All publication-eligible simulations use ngspice 46 \cite{Ngspice_Manual}. The GF180MCU stages use the primitive-device model file \texttt{sm141064.ngspice} \cite{Google_GF180MCU_PDK_GitHub,GF180MCU_ReadTheDocs_CustomDesign,GF180MCU_Model_sm141064}. The local PDK checkout corresponds to commit \texttt{de3240d}; the primitive-model and 7-track standard-cell submodules correspond to commits \texttt{9f992d5} and \texttt{43beb45}, respectively \cite{GF180MCU_ReadTheDocs_StdCells_7Track}. The full hashes are given in the repository references. The controlled templates use \texttt{nmos\_3p3} and \texttt{pmos\_3p3}. The released-cell experiment instantiates official cell CDLs and preserves their transistor connectivity, widths, and lengths while mapping their 5-V device symbols to compatible open ngspice model wrappers.
+
+The cross-PDK stage uses the FOSSi Foundation SKY130 primitive-device and high-density standard-cell repositories at commits \texttt{403964d} and \texttt{9cb2d7c}, respectively \cite{FOSSi_SKY130_Primitive_GitHub,FOSSi_SKY130_HD_GitHub}. Generated standard-cell SPICE subcircuits instantiate \texttt{sky130\_fd\_pr\_\_nfet\_01v8} and \texttt{sky130\_fd\_pr\_\_pfet\_01v8\_hvt}. Each netlist includes only the corresponding official tt, ff, or ss PM3 models and their mismatch-parameter definitions. The mismatch and process-randomization switches \texttt{mc\_mm\_switch} and \texttt{mc\_pr\_switch} are set to zero, so this stage has the same deterministic estimand as the GF180MCU study.
 
 The GF180MCU design include enables both global and mismatch statistical switches by default. Each generated publication netlist therefore inserts
 
@@ -118,7 +120,7 @@ The primary dataset contains 320 successful rows generated with Latin hypercube 
 
 The independent validation set is not cross-PDK or cross-simulator validation. Both datasets use the same PDK, simulator, device models, and circuit templates. Independence here means a different design-point sample, sampling seed, netlist directory, and log directory within the same controlled flow.
 
-\section{Released-library external validation}
+\section{Released-library and cross-PDK external validation}
 
 \subsection{Official CDLs and independent datasets}
 
@@ -131,6 +133,14 @@ The online study uses five additional pool seeds and three held-out corners. Eac
 \subsection{Validation-blind stopping rule}
 
 The released-library stage adds an operational stopping rule that never observes validation labels. After each batch, it evaluates three quantities available during deployment: normalized prequential delay error on the just-measured batch, normalized change in the model's predictions over the remaining pool, and feature-space coverage radius relative to its initial value. Seeds 0--2 (nine corner pools) are used to choose thresholds. A candidate rule must keep at least eight of nine development runs within 0.02 $R^2$ of the full reference and every development run within 0.05. The selected rule requires a minimum budget of 64, prequential normalized MAE no greater than 0.25, prediction change no greater than 0.05, and coverage ratio no greater than 0.50 for two consecutive batches. These thresholds are then locked before evaluation on seeds 3--4 (six confirmation pools).
+
+\subsection{SKY130 external protocol replication}
+
+The locked rule is next applied to a second open PDK without threshold selection or retuning. The SKY130 high-density set contains the same eight logical families and drive strengths 1 and 4. SKY130 names AOI21 and OAI21 as \texttt{a21oi} and \texttt{o21ai}; the analysis retains the common logical-family names while recording every original source-cell name and path. One sensitized arc is selected per family using the same logical conditions as in the GF180MCU released-cell study.
+
+Independent SKY130 primary and validation datasets contain 576 successful rows each, generated with seeds 20260718 and 20260819. Each dataset contributes 36 points per variant and 192 points per corner. The sampled voltage, temperature, slew, and load ranges are identical to the released GF180MCU study. Five new pool seeds and three held-out corners provide 15 additional 96-point pools. Acquisition uses the same variant-balanced farthest-first order and 16-query batches. For each corner, the regressor is trained on SKY130 data from the other two corners and updated with newly measured same-corner support. Thus, this experiment tests transfer of the allocation and stopping protocol, not transfer of fitted GF180MCU model parameters.
+
+All 1440 candidate netlists are simulated to obtain measured 96-call references. The stopping decision is then replayed using the unchanged GF180MCU thresholds. The two independent SKY130 datasets and the online pools add 2592 successful calls, bringing the complete two-PDK evidence package to 10,093 successful SPICE calls. Netlists, logs, source-cell paths, PDK commits, model corners, and switch values are retained for audit.
 
 \subsection{Partial Liberty compatibility check}
 
@@ -288,11 +298,43 @@ The 432-point Liberty comparison provides a different form of evidence. Fresh ng
 \label{fig:released-validation}
 \end{figure}
 
+\subsection{The GF180MCU stopping rule transfers to SKY130 without retuning}
+
+The prelocked stopping rule satisfied the primary 0.02-gap criterion in all 15 SKY130 pools (Table~\ref{tab:cross-pdk-stopping}). Its median stop was 80 of 96 calls, corresponding to a 16.7\% median reduction, and its largest delay $R^2$ gap to a measured reference was 0.0146. The median stopped-model delay $R^2$ was 0.9086, and the median worst-family $R^2$ was 0.7235. Seven pools, including all five ss pools, continued to the complete 96-call reference; the rule therefore saved work only when its observable stability and coverage conditions were met.
+
+Fixed budgets did not provide the same protection. A 64-call budget met the 0.02 criterion in 6 of 15 SKY130 pools and produced a maximum gap of 0.0945. A 48-call budget met it in only 1 of 15 pools and produced a maximum gap of 0.1516. The same ordering is present in the six untouched GF180MCU confirmation pools: the locked rule succeeds in five, whereas each fixed budget succeeds in one. Figure~\ref{fig:cross-pdk} shows every locked-rule outcome and the matched fixed-budget comparisons. The result supports transfer of the stopping protocol across these two PDKs, but it does not imply that a regressor fitted on GF180MCU directly predicts SKY130 cells.
+
+\begin{table}[t]
+\centering
+\caption{Stopping-rule replication across released GF180MCU and SKY130 standard cells. Success means a delay $R^2$ gap no greater than 0.02 relative to the measured 96-call reference.}
+\label{tab:cross-pdk-stopping}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrr}
+\toprule
+PDK & Method & Pools & Median calls & Median reduction & Successful pools & Maximum gap \\
+\midrule
+GF180MCU & Locked rule & 6 & 88 & 8.3\% & 5/6 & 0.0207 \\
+GF180MCU & Fixed 64 & 6 & 64 & 33.3\% & 1/6 & 0.0537 \\
+GF180MCU & Fixed 48 & 6 & 48 & 50.0\% & 1/6 & 0.1219 \\
+SKY130 & GF180MCU-locked rule & 15 & 80 & 16.7\% & 15/15 & 0.0146 \\
+SKY130 & Fixed 64 & 15 & 64 & 33.3\% & 6/15 & 0.0945 \\
+SKY130 & Fixed 48 & 15 & 48 & 50.0\% & 1/15 & 0.1516 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig4_cross_pdk_replication.pdf}
+\caption{Cross-PDK replication of the validation-blind stopping rule. (a) Individual outcomes for the six untouched GF180MCU confirmation pools and 15 external SKY130 pools. The rule was selected using separate GF180MCU development pools; the dashed line is the prespecified 0.02 delay-$R^2$ gap limit. Negative gaps indicate that an early model slightly outperformed the corresponding 96-call model on the independent validation set. (b) Fraction of pools within the 0.02 limit for the locked rule and fixed 64- and 48-call budgets. (c) Call reduction for each locked-rule outcome; horizontal bars show medians. SKY130 thresholds were not retuned, and all candidate pools were completed to obtain measured references.}
+\label{fig:cross-pdk}
+\end{figure}
+
 \section{Discussion}
 
 \subsection{What changes relative to an ML benchmark}
 
-The central result is no longer that one regressor achieves a larger random-split score. Every online support label is produced by a retained simulator call, validation labels are isolated from acquisition, and budget savings are measured against the same pool completed by SPICE. The controlled stage establishes repeatability and matched-policy behavior; the released-CDL stage asks whether that behavior survives larger topology and drive-strength diversity. This evidence chain directly addresses simulation allocation under an unseen-corner stress test.
+The central result is no longer that one regressor achieves a larger random-split score. Every online support label is produced by a retained simulator call, validation labels are isolated from acquisition, and budget savings are measured against the same pool completed by SPICE. The controlled stage establishes repeatability and matched-policy behavior. The released GF180MCU stage tests larger topology and drive-strength diversity, while SKY130 asks whether the locked operational rule survives a change of device models, cell implementations, and process node. This evidence chain addresses simulation allocation under an unseen-corner stress test rather than static tabular prediction.
 
 The configuration audit is equally important. Open PDKs improve reproducibility only when their operating controls are recorded. Global and mismatch variation should not be disabled universally; they are essential for variation analysis. They are disabled here because the estimand is deterministic corner response. A future statistical-characterization study should instead expose random seeds, repeat counts, and distributional targets as first-class variables.
 
@@ -306,17 +348,17 @@ This finding should not be generalized to all uncertainty acquisition. Gaussian-
 
 The 96-point candidate pool is an early-exploration reference, not a complete characterization grid. The measured time per controlled 96-query reference is about 59~s, whereas the released-CDL pools have a median of 185.6~s because they contain larger official topologies and broader slew/load ranges. Production characterization would involve more arcs, loads, slews, states, corners, and extracted views, so absolute cost would be much larger. The defensible extrapolation is qualitative: a validation-blind support loop can decide where to spend a bounded number of new simulations, while final selected conditions remain subject to the intended sign-off flow.
 
-The two stages also show why a fixed budget should not be elevated into a general rule. Forty-eight queries are effective for the controlled templates but unreliable in the released-library confirmation pools. The locked stopping rule is intentionally conservative: its 8.3\% median saving is modest, yet it substantially improves gap control without consulting validation labels. A practical implementation can relax or tighten its thresholds according to the cost of an additional simulation and the acceptable risk of stopping early.
+The three stages also show why a fixed budget should not be elevated into a general rule. Forty-eight queries are effective for the controlled templates but unreliable for both released libraries. The locked stopping rule is intentionally conservative: its median saving is 8.3\% in GF180MCU confirmation and 16.7\% in SKY130, and it performs all 96 calls whenever its stability conditions are not met. This behavior gives up aggressive savings to improve gap control without consulting validation labels. A deployment with a different loss tolerance should develop new thresholds before its confirmation data are examined rather than reinterpret the present values as universal constants.
 
 \subsection{Limitations}
 
-The study uses one PDK, one simulator version, and pre-layout netlists. Its released-library external test expands coverage to eight combinational families and two drive strengths, including AOI21, OAI21, and MUX2, but still evaluates only one sensitized arc per family. It does not cover sequential cells, every input-state arc, leakage and internal-power tables, timing constraints, extracted parasitics, or another PDK. Candidate and validation data remain within the same PDK and generation flow.
+The study uses two open PDKs, one simulator version, and pre-layout netlists. Both released-library stages cover eight combinational families and two drive strengths, including AOI21, OAI21, and MUX2, but evaluate only one sensitized arc per family. They do not cover sequential cells, every input-state arc, leakage and internal-power tables, timing constraints, or extracted parasitics. Each PDK uses its own training and validation data, so the experiment establishes cross-PDK protocol replication rather than zero-shot model transfer. Generalization to a third PDK, a different simulator, or a layout-extracted flow remains untested.
 
-The Liberty comparison is a 432-point surface compatibility check, not full characterization. Its 18.58\% median absolute percentage error indicates that waveform, deck, and parasitic differences still matter despite excellent rank agreement. The acquisition policy is deliberately simple and is not claimed as algorithmically novel. The stopping confirmation contains six pools; one exceeds the prespecified 0.02 gap by 0.0007, although all remain within 0.05. Cross-PDK testing and a larger locked confirmation cohort are therefore needed before asserting general corner-calibration behavior.
+The Liberty comparison is a 432-point GF180MCU surface compatibility check, not full characterization, and no matched SKY130 Liberty comparison is claimed. Its 18.58\% median absolute percentage error indicates that waveform, deck, and parasitic differences still matter despite excellent rank agreement. The acquisition policy is deliberately simple and is not claimed as algorithmically novel. One of six GF180MCU confirmation pools exceeds the 0.02 gap by 0.0007, although all remain within 0.05; the 15 SKY130 pools satisfy the primary threshold but still constitute a finite cohort generated with one sampling design. Larger locked cohorts and post-layout tests are needed before industrial characterization claims are warranted.
 
 \section{Conclusion}
 
-This paper presents a deterministic, provenance-controlled simulator-in-the-loop protocol for unseen-corner support in GF180MCU standard-cell exploration. In the controlled stage, cell-balanced space filling reaches a median delay $R^2$ of 0.8729 with 48 of 96 queries and a median gap of 0.0120 to the measured reference. The released-CDL stage extends the evidence to eight logic families, two drive strengths, 15 new pools, and 1440 fresh simulations. It also supplies the more important boundary result: a fixed half-budget does not transfer reliably. A validation-blind rule locked on separate development pools stops conservatively at a median of 88 queries, keeping five of six confirmation runs within 0.02 and all within 0.05 of their references. Fresh SPICE delay additionally preserves official Liberty ordering over 432 matched points ($\rho=0.9900$), while an 18.58\% median absolute error exposes the remaining characterization mismatch. The contribution is therefore an auditable allocation and stopping protocol with both positive and negative external evidence, bounded to same-PDK pre-layout exploration rather than sign-off or complete Liberty generation.
+This paper presents a deterministic, provenance-controlled simulator-in-the-loop protocol for unseen-corner support and validates its stopping behavior across GF180MCU and SKY130. The controlled stage shows that geometry-aware acquisition can approach a measured reference with half of a 96-call pool. The released-cell stages provide the decisive evidence: a rule locked on GF180MCU stops at median budgets of 88 in six GF180MCU confirmation pools and 80 in 15 external SKY130 pools. Five of six and 15 of 15 runs, respectively, remain within 0.02 delay $R^2$ of their measured references, whereas fixed budgets fail more often. The complete evidence package contains 10,093 successful SPICE calls. A 432-point GF180MCU check additionally preserves official Liberty delay ordering ($\rho=0.9900$) while exposing an 18.58\% median absolute error. The contribution is therefore an auditable simulation-allocation and stopping protocol with cross-PDK replication, bounded to PDK-specific retraining and pre-layout exploration rather than zero-shot transfer, sign-off, or complete Liberty generation.
 
 \section*{CRediT authorship contribution statement}
 
@@ -332,11 +374,11 @@ This research received no specific grant from any funding agency in the public, 
 
 \section*{Data and code availability}
 
-The live project repository is available at \url{https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej}. The preceding reproducibility release is archived at \url{https://doi.org/10.5281/zenodo.20524583}. A new versioned release will add the released-CDL primary and validation data, 1440 online query records, stopping decisions, 432-point Liberty comparison, retained netlists and logs, analysis scripts, and figure source data before submission of this revision.
+The live project repository is available at \url{https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej}. The preceding reproducibility release is archived at \url{https://doi.org/10.5281/zenodo.20524583}. A new versioned release will add the GF180MCU and SKY130 released-cell primary and validation data, 2880 online query records, cross-PDK stopping decisions, the 432-point GF180MCU Liberty comparison, retained netlists and logs, exact PDK commits, analysis scripts, numeric audits, and figure source data before submission of this revision.
 
 \section*{Acknowledgments}
 
-The authors thank the GF180MCU open-PDK and ngspice communities for providing the process models, simulator, and documentation that enabled this reproducible study.
+The authors thank the GF180MCU, SKY130, FOSSi Foundation, and ngspice communities for providing the process models, standard-cell libraries, simulator, and documentation that enabled this reproducible study.
 
 \section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
 

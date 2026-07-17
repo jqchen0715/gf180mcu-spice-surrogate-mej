@@ -10,8 +10,17 @@ import re
 import tempfile
 
 
-LOCAL_PDK_PREFIX = re.compile(r"/(?:Users|home)/[^,\s\"']+?/gf180mcu-pdk/")
-PORTABLE_PDK_PREFIX = "gf180mcu-pdk/"
+LOCAL_PDK_PREFIXES = (
+    (re.compile(r"/(?:Users|home)/[^,\s\"']+?/gf180mcu-pdk/"), "gf180mcu-pdk/"),
+    (re.compile(r"/(?:Users|home)/[^,\s\"']+?/sky130-pdk(?:-minimal-test)?/"), "sky130-pdk/"),
+)
+
+
+def portable_path(value: str) -> str:
+    portable = value
+    for pattern, replacement in LOCAL_PDK_PREFIXES:
+        portable = pattern.sub(replacement, portable)
+    return portable
 
 
 def sanitize_csv(path: Path) -> bool:
@@ -25,7 +34,7 @@ def sanitize_csv(path: Path) -> bool:
     changed = False
     for row in rows:
         value = row.get("model_file", "")
-        portable = LOCAL_PDK_PREFIX.sub(PORTABLE_PDK_PREFIX, value)
+        portable = portable_path(value)
         if portable != value:
             row["model_file"] = portable
             changed = True
@@ -43,7 +52,7 @@ def sanitize_csv(path: Path) -> bool:
 
 def sanitize_text(path: Path) -> bool:
     source = path.read_text(encoding="utf-8")
-    portable = LOCAL_PDK_PREFIX.sub(PORTABLE_PDK_PREFIX, source)
+    portable = portable_path(source)
     if portable == source:
         return False
     path.write_text(portable, encoding="utf-8")
@@ -55,10 +64,14 @@ def main() -> int:
     parser.add_argument("root", type=Path)
     args = parser.parse_args()
     changed_csv = [path for path in args.root.rglob("*.csv") if sanitize_csv(path)]
-    changed_netlists = [path for path in args.root.rglob("*.cir") if sanitize_text(path)]
+    text_suffixes = {".cir", ".log", ".md", ".json", ".py", ".tex"}
+    changed_text = [
+        path for path in args.root.rglob("*")
+        if path.is_file() and path.suffix.lower() in text_suffixes and sanitize_text(path)
+    ]
     print(
         f"Sanitized {len(changed_csv)} CSV files and "
-        f"{len(changed_netlists)} netlists under {args.root}"
+        f"{len(changed_text)} text files under {args.root}"
     )
     return 0
 

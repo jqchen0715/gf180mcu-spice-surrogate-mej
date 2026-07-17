@@ -1,0 +1,75 @@
+{
+  "study_role": "external cross-PDK protocol replication",
+  "source_protocol": "results/gf180_library_external_validation/online/stopping/stopping_protocol_and_results.json",
+  "locked_rule_selected_using_sky130": false,
+  "locked_rule": {
+    "minimum_budget": 64,
+    "prequential_nmae_threshold": 0.25,
+    "prediction_change_threshold": 0.05,
+    "coverage_ratio_threshold": 0.5
+  },
+  "cell_families": [
+    "AOI21",
+    "INV",
+    "MUX2",
+    "NAND2",
+    "NAND3",
+    "NOR2",
+    "OAI21",
+    "XOR2"
+  ],
+  "cell_variants": 16,
+  "corners": [
+    "typical",
+    "ff",
+    "ss"
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "candidate_pool_size": 96,
+  "validation_labels_visible_to_acquisition": false,
+  "full_reference": "all 96 SKY130 candidate netlists measured with ngspice",
+  "comparison": {
+    "gf180_locked_rule": {
+      "runs": 15,
+      "median_stop_budget": 80.0,
+      "median_query_reduction_pct": 16.666666666666668,
+      "gap_le_0p02_rate": 1.0,
+      "gap_le_0p05_rate": 1.0,
+      "median_delay_r2_gap_to_full": 0.0,
+      "maximum_delay_r2_gap_to_full": 0.014627163482930583,
+      "median_delay_r2": 0.9085547609759672,
+      "median_worst_family_delay_r2": 0.7235232119276641,
+      "median_worst_variant_delay_r2": 0.1227883443753629
+    },
+    "fixed_48": {
+      "runs": 15,
+      "median_stop_budget": 48.0,
+      "median_query_reduction_pct": 50.0,
+      "gap_le_0p02_rate": 0.06666666666666667,
+      "gap_le_0p05_rate": 0.6666666666666666,
+      "median_delay_r2_gap_to_full": 0.035287424940636525,
+      "maximum_delay_r2_gap_to_full": 0.15156594984331428,
+      "median_delay_r2": 0.8547011068332309,
+      "median_worst_family_delay_r2": 0.5663896637954895,
+      "median_worst_variant_delay_r2": -0.16818404898801087
+    },
+    "fixed_64": {
+      "runs": 15,
+      "median_stop_budget": 64.0,
+      "median_query_reduction_pct": 33.333333333333336,
+      "gap_le_0p02_rate": 0.4,
+      "gap_le_0p05_rate": 0.8666666666666667,
+      "median_delay_r2_gap_to_full": 0.02268436559997289,
+      "maximum_delay_r2_gap_to_full": 0.09450536217234662,
+      "median_delay_r2": 0.8771566963735463,
+      "median_worst_family_delay_r2": 0.6585992497236489,
+      "median_worst_variant_delay_r2": -0.038645141353002455
+    }
+  }
+}

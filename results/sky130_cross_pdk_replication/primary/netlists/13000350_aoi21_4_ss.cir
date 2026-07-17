@@ -1,0 +1,25 @@
+* SKY130 cross-PDK protocol-replication testbench
+* sample_id=13000350 cell=aoi21_4 source_cell=sky130_fd_sc_hd__a21oi_4 corner=ss
+.title SKY130 library cell aoi21_4 A1_to_Y__A2=1,B1=0
+.option scale=1.0u method=gear reltol=1e-4 abstol=1e-12 vntol=1e-6
+.temp 24.761068
+.param mc_mm_switch=0 mc_pr_switch=0
+.include "sky130-pdk/libraries/sky130_fd_pr/latest/cells/nfet_01v8/sky130_fd_pr__nfet_01v8__ss.pm3.spice"
+.include "sky130-pdk/libraries/sky130_fd_pr/latest/cells/nfet_01v8/sky130_fd_pr__nfet_01v8__mismatch.corner.spice"
+.include "sky130-pdk/libraries/sky130_fd_pr/latest/cells/pfet_01v8_hvt/sky130_fd_pr__pfet_01v8_hvt__ss.pm3.spice"
+.include "sky130-pdk/libraries/sky130_fd_pr/latest/cells/pfet_01v8_hvt/sky130_fd_pr__pfet_01v8_hvt__mismatch.corner.spice"
+.include "sky130-pdk/libraries/sky130_fd_sc_hd/latest/cells/a21oi/sky130_fd_sc_hd__a21oi_4.spice"
+
+VDD vdd 0 1.9763947
+VIN a1 0 PULSE(0 1.9763947 24n 1.4920213n 1.4920213n 70n 160n)
+VFIX_A2 a2 0 1.9763947
+VFIX_B1 b1 0 0
+XU1 a1 a2 b1 0 0 vdd vdd y sky130_fd_sc_hd__a21oi_4
+CLOAD y 0 0.17189267p
+
+.tran 5p 340n
+.measure tran tphl TRIG v(a1) VAL=0.98819736 RISE=1 TARG v(y) VAL=0.98819736 FALL=1
+.measure tran tplh TRIG v(a1) VAL=0.98819736 FALL=1 TARG v(y) VAL=0.98819736 RISE=1
+.measure tran i_vdd_avg AVG i(VDD) FROM=10n TO=330n
+.measure tran power_avg_uW PARAM='-1.9763947*i_vdd_avg*1e6'
+.end
