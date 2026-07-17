@@ -1,5 +1,5 @@
 {
-  "dataset": "/Users/jiaqing/new_paper/data/dataset_primary_deterministic_320.csv",
+  "dataset": "data/dataset_primary_deterministic_320.csv",
   "validation_dataset_used": false,
   "seeds": [
     0,

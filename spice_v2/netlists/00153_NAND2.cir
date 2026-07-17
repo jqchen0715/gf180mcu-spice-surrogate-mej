@@ -3,8 +3,8 @@
 .title NAND2 seed characterization sample 153
 .option method=gear reltol=1e-4 abstol=1e-12 vntol=1e-6
 .temp 68.5611
-.include "/Users/jiaqing/new_paper/gf180mcu-pdk/libraries/gf180mcu_fd_pr/latest/models/ngspice/design.ngspice"
-.lib "/Users/jiaqing/new_paper/gf180mcu-pdk/libraries/gf180mcu_fd_pr/latest/models/ngspice/sm141064.ngspice" ss
+.include "gf180mcu-pdk/libraries/gf180mcu_fd_pr/latest/models/ngspice/design.ngspice"
+.lib "gf180mcu-pdk/libraries/gf180mcu_fd_pr/latest/models/ngspice/sm141064.ngspice" ss
 
 VDD vdd 0 1.81917
 Vin in 0 PULSE(0 1.81917 2.000000e-09 1.240601e-10 1.240601e-10 2.000000e-08 4.000000e-08)

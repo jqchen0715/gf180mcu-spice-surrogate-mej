@@ -3,8 +3,8 @@
 .title INV seed characterization sample 54
 .option method=gear reltol=1e-4 abstol=1e-12 vntol=1e-6
 .temp 5.23302
-.include "/Users/jiaqing/new_paper/gf180mcu-pdk/libraries/gf180mcu_fd_pr/latest/models/ngspice/design.ngspice"
-.lib "/Users/jiaqing/new_paper/gf180mcu-pdk/libraries/gf180mcu_fd_pr/latest/models/ngspice/sm141064.ngspice" typical
+.include "gf180mcu-pdk/libraries/gf180mcu_fd_pr/latest/models/ngspice/design.ngspice"
+.lib "gf180mcu-pdk/libraries/gf180mcu_fd_pr/latest/models/ngspice/sm141064.ngspice" typical
 
 VDD vdd 0 1.87766
 Vin in 0 PULSE(0 1.87766 2.000000e-09 5.648644e-11 5.648644e-11 2.000000e-08 4.000000e-08)
