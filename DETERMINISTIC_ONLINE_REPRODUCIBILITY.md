@@ -117,9 +117,9 @@ python experiments/plot_deterministic_online_results.py
 python tools/audit_deterministic_online_manuscript.py
 ```
 
-## 8. New Zenodo Version Checklist
+## 8. Zenodo v0.5.0 Archive Verification
 
-The next versioned archive should contain:
+The published versioned archive contains:
 
 - deterministic primary and validation CSV files;
 - their generated netlists and ngspice logs;
@@ -130,5 +130,6 @@ The next versioned archive should contain:
 - manuscript source, compiled PDF, figure source files, and numeric audit;
 - exact package versions, checksums, and the PDK commit identifier.
 
-The GitHub copy may omit the thousands of per-query netlist/log files to keep
-the repository manageable. The versioned Zenodo archive should include them.
+The GitHub release and versioned Zenodo archive both retain the per-query
+netlist and ngspice log files. Version DOI:
+`10.5281/zenodo.21415175`.
