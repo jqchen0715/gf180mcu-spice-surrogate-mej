@@ -1,0 +1,47 @@
+Note: Starting dynamic gmin stepping
+Note: Dynamic gmin stepping completed
+
+Note: Compatibility modes selected: hs a
+
+
+Circuit: SKY130 library cell mux2_4 A0_to_X__A1=0,S=0
+
+option SCALE: Scale is set to 1e-06 for instance and model parameters
+Doing analysis at TEMP = -26.059130 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+ Reference value :  6.76400e-10
+ Reference value :  2.26514e-08
+ Reference value :  4.34261e-08
+ Reference value :  6.42811e-08
+ Reference value :  8.52011e-08
+ Reference value :  1.06391e-07
+ Reference value :  1.27400e-07
+ Reference value :  1.48475e-07
+ Reference value :  1.69655e-07
+ Reference value :  1.90443e-07
+ Reference value :  2.12016e-07
+ Reference value :  2.33346e-07
+ Reference value :  2.54106e-07
+ Reference value :  2.75740e-07
+ Reference value :  2.96945e-07
+ Reference value :  3.18665e-07
+No. of Data Rows : 68034
+
+  Measurements for Transient Analysis
+
+tplh                =  -1.40674e-10 targ=  2.88086e-08 trig=  2.89493e-08
+tphl                =  1.66827e-09 targ=  1.10516e-07 trig=  1.08848e-07
+i_vdd_avg           =  -2.68762e-06 from=  1.00000e-08 to=  3.30005e-07
+power_avg_uw        =  5.05274e+00
+
+
+Total analysis time (seconds) = 4.22949
+
+Total elapsed time (seconds) = 4.466 
+
+Total DRAM available = 16384.000 MB.
+DRAM currently available =  104.016 MB.
+Maximum ngspice program size =   28.266 MB.
+Current ngspice program size =   28.266 MB.
+

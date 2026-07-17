@@ -29,10 +29,9 @@ results/online_spice_deterministic/
 
 They contain 3600 successful online ngspice query records, validation-blind
 budget trajectories, paired tests, repeated-query consistency checks, and 15
-measured 96-point exhaustive references. The GitHub repository retains the
-structured query and result records. The next Zenodo release should additionally
-include the per-query netlists and logs listed in
-`DETERMINISTIC_ONLINE_REPRODUCIBILITY.md`.
+measured 96-point exhaustive references. Release `v0.5.0` retains the
+structured records together with the per-query netlists and ngspice logs listed
+in `DETERMINISTIC_ONLINE_REPRODUCIBILITY.md`.
 
 The released-library external validation is under:
 
@@ -197,15 +196,15 @@ for the deterministic online extension.
 
 ## Citation
 
-Please cite the archived Zenodo release:
+The preceding static-table package is archived at:
 
 ```text
 https://doi.org/10.5281/zenodo.20524583
 ```
 
-The DOI above identifies the preceding archived package. Create a new GitHub
-release and Zenodo version for the cross-PDK evidence before citing a versioned
-archive of the present package.
+The DOI above identifies release `v0.1.0`. The version DOI for the cross-PDK
+`v0.5.0` archive is recorded in `DATA_AVAILABILITY.md` and the corresponding
+GitHub release after Zenodo registration.
 
 The live GitHub repository is:
 

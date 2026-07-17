@@ -1,0 +1,49 @@
+
+Note: Compatibility modes selected: hs a
+
+
+Circuit: SKY130 library cell xor2_4 A_to_X__B=0
+
+option SCALE: Scale is set to 1e-06 for instance and model parameters
+Doing analysis at TEMP = 114.654560 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+ Reference value :  5.74640e-09
+ Reference value :  2.41575e-08
+ Reference value :  4.06173e-08
+ Reference value :  5.74523e-08
+ Reference value :  7.63173e-08
+ Reference value :  9.40973e-08
+ Reference value :  1.10622e-07
+ Reference value :  1.27442e-07
+ Reference value :  1.44692e-07
+ Reference value :  1.62432e-07
+ Reference value :  1.79722e-07
+ Reference value :  1.97042e-07
+ Reference value :  2.15662e-07
+ Reference value :  2.33522e-07
+ Reference value :  2.51197e-07
+ Reference value :  2.68542e-07
+ Reference value :  2.85427e-07
+ Reference value :  3.02927e-07
+ Reference value :  3.20637e-07
+ Reference value :  3.38687e-07
+No. of Data Rows : 68032
+
+  Measurements for Transient Analysis
+
+tplh                =  5.52471e-11 targ=  2.92076e-08 trig=  2.91524e-08
+tphl                =  9.92869e-10 targ=  1.10450e-07 trig=  1.09457e-07
+i_vdd_avg           =  -2.94626e-06 from=  1.00000e-08 to=  3.30002e-07
+power_avg_uw        =  5.58058e+00
+
+
+Total analysis time (seconds) = 4.89341
+
+Total elapsed time (seconds) = 5.068 
+
+Total DRAM available = 16384.000 MB.
+DRAM currently available =   73.500 MB.
+Maximum ngspice program size =   28.125 MB.
+Current ngspice program size =   28.125 MB.
+

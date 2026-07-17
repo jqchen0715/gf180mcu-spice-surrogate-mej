@@ -133,4 +133,9 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    # Keep this historical entry point while delegating to the publication version.
+    from plot_workflow_figure_python import OUT, draw
+
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    draw()
+    print(f"Wrote {OUT}.pdf/.svg/.png/.tiff")

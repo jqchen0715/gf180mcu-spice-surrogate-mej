@@ -24,6 +24,8 @@ env/
 !spice_v2/logs_v3_480/
 !spice_v2/logs_v3_480/*.log
 !results/gf180_library_external_validation/**/*.log
+!results/sky130_cross_pdk_replication/**/*.log
+!results/online_spice_deterministic/**/*.log
 
 # Local/private or heavyweight materials not redistributed in this repository
 gf180mcu-pdk/
@@ -36,3 +38,4 @@ spice_v2/logs_v3_smoke/
 # Local generated archives
 *.zip
 *.tar.gz
+manuscript/figures/fig1_workflow.tiff

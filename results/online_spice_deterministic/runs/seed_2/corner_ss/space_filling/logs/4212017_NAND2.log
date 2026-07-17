@@ -1,0 +1,43 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: NAND2 seed characterization sample 4212017
+
+Doing analysis at TEMP = -1.409120 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                    1.74249
+in                                           0
+out                                    1.74249
+nmid                                0.00107699
+vin#branch                                   0
+vdd#branch                        -1.75556e-12
+
+ Reference value :  4.70983e-08
+ Reference value :  1.08432e-07
+No. of Data Rows : 60047
+
+  Measurements for Transient Analysis
+
+tphl                =  1.31117e-10 targ=  2.19477e-09 trig=  2.06365e-09
+tplh                =  7.01094e-11 targ=  2.22611e-08 trig=  2.21909e-08
+i_vdd_avg           =  -1.26362e-06 from=  5.00000e-09 to=  1.10002e-07
+power_avg_uw        =  2.20184e+00
+
+
+Total analysis time (seconds) = 0.469894
+
+Total elapsed time (seconds) = 0.540 
+
+Total DRAM available = 16384.000 MB.
+DRAM currently available =  227.594 MB.
+Maximum ngspice program size =   12.609 MB.
+Current ngspice program size =   11.703 MB.
+

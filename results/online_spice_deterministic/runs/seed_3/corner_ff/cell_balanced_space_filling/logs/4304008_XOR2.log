@@ -1,0 +1,47 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: XOR2 seed characterization sample 4304008
+
+Doing analysis at TEMP = -11.681200 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                    1.90475
+in                                           0
+b                                      1.90475
+abar                                   1.90475
+bbar                               1.06909e-09
+out                                    1.90475
+vb#branch                                    0
+vin#branch                         2.69282e-12
+vdd#branch                        -1.28653e-11
+
+ Reference value :  2.68394e-08
+ Reference value :  6.23134e-08
+ Reference value :  9.96062e-08
+No. of Data Rows : 60047
+
+  Measurements for Transient Analysis
+
+tphl                =  9.65915e-11 targ=  2.12319e-09 trig=  2.02660e-09
+tplh                =  8.39639e-11 targ=  2.21638e-08 trig=  2.20798e-08
+i_vdd_avg           =  -2.73230e-06 from=  5.00000e-09 to=  1.10001e-07
+power_avg_uw        =  5.20436e+00
+
+
+Total analysis time (seconds) = 0.794877
+
+Total elapsed time (seconds) = 0.868 
+
+Total DRAM available = 16384.000 MB.
+DRAM currently available =  171.016 MB.
+Maximum ngspice program size =   12.891 MB.
+Current ngspice program size =   12.359 MB.
+

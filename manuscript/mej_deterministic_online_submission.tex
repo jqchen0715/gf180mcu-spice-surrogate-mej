@@ -150,12 +150,12 @@ As a separate engineering check, released Liberty delay surfaces are compared wi
 
 \subsection{Held-out-corner task}
 
-For a held-out corner $c$, the base set contains only primary rows from the other two corners. A new candidate pool contains 24 Latin-hypercube points per cell, or 96 points in total, all assigned to $c$. Acquisition initially receives only their input features. When a point is selected, the program writes its transistor-level netlist, launches ngspice, parses delay and power, appends the measured row to the support set, and retrains the surrogate. Validation rows from corner $c$ are then used to record the budget trajectory, but their labels are not passed to acquisition or stopping logic. Figure~\ref{fig:workflow} summarizes this separation.
+For a held-out corner $c$, the base set contains only primary rows from the other two corners. A new candidate pool contains 24 Latin-hypercube points per cell, or 96 points in total, all assigned to $c$. Acquisition initially receives only their input features. When a point is selected, the program writes its transistor-level netlist, launches ngspice, parses delay and power, appends the measured row to the support set, and retrains the surrogate. Validation rows from corner $c$ are then used to record the budget trajectory, but their labels are not passed to acquisition or stopping logic. Figure~\ref{fig:workflow} summarizes this separation and the subsequent locked-rule confirmation and cross-PDK replication sequence.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/fig1_workflow.pdf}
-\caption{Deterministic simulator-in-the-loop protocol. PDK statistical switches are forced off before generating independent primary and validation sets. For an unseen process corner, acquisition receives a feature-only 96-point pool. Selected support points launch fresh ngspice runs, while the independent validation set is used only to evaluate each budget. Completing the candidate pool provides a measured exhaustive reference.}
+\caption{Validation-blind simulator-in-the-loop acquisition and locked-rule cross-PDK validation. \textbf{(a)} For a held-out corner, acquisition receives a feature-only 96-point pool. Every selected support label is obtained from a fresh ngspice run, whereas independent validation labels are used only to evaluate the budget trajectory; completing the pool provides the measured exhaustive reference. \textbf{(b)} Observable stopping thresholds are selected on nine GF180MCU development pools, locked before six untouched same-PDK confirmation pools and 15 SKY130 external pools are examined, and applied without threshold retuning. Models are retrained within each PDK; the experiment is pre-layout and does not represent zero-shot parameter transfer or complete Liberty characterization.}
 \label{fig:workflow}
 \end{figure}
 

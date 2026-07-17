@@ -12,10 +12,10 @@ The live GitHub repository is:
 https://github.com/jqchen0715/gf180mcu-spice-surrogate-mej
 ```
 
-The deterministic cross-PDK simulator-in-the-loop extension is prepared in this
-live repository. Before manuscript submission, create a new GitHub release and
-a new Zenodo version. The resulting version DOI should replace the preceding
-DOI in the final manuscript.
+Release `v0.5.0` contains the deterministic cross-PDK simulator-in-the-loop
+extension. Its version-specific Zenodo DOI is recorded here and in the final
+manuscript after registration; the preceding DOI above remains a permanent
+record of the earlier `v0.1.0` package.
 
 The repository includes:
 
@@ -43,9 +43,9 @@ The repository includes:
 - `results/sky130_cross_pdk_replication/`
 - `SKY130_CROSS_PDK_REPRODUCIBILITY.md`
 
-The prepared repository copy contains the released-library netlists and logs in
-addition to the structured tables. The versioned Zenodo archive should retain
-these records and the controlled-stage per-query provenance. See
+The release contains the controlled-stage and released-library netlists and
+logs in addition to the structured tables. The versioned Zenodo archive retains
+these records as per-query provenance. See
 `DETERMINISTIC_ONLINE_REPRODUCIBILITY.md` and
 `RELEASED_LIBRARY_REPRODUCIBILITY.md` and
 `SKY130_CROSS_PDK_REPRODUCIBILITY.md` for the complete release checklist.
