@@ -1,0 +1,23 @@
+{
+  "decision_written_at_utc": "2026-07-18T06:03:10.289924+00:00",
+  "pdk": "SKY130",
+  "seed": 5,
+  "heldout_corner": "ff",
+  "decision_budget": 80,
+  "decision_type": "two_consecutive_eligible_batches",
+  "latest_observables": {
+    "prequential_delay_nmae": 0.13388757455496036,
+    "prediction_change_nmae": 0.012318385450486843,
+    "coverage_radius_ratio": 0.41714752392445753
+  },
+  "locked_rule": {
+    "minimum_budget": 64,
+    "prequential_nmae_threshold": 0.25,
+    "prediction_change_threshold": 0.05,
+    "coverage_ratio_threshold": 0.5
+  },
+  "precommit_manifest_sha256": "31d4a65f3c3719504d1332e20c5b9a42ae6f2d6eb01b956e7a8e16be8e496326",
+  "candidate_features_sha256": "36463f4f09e1a1ce7bcae15fe5555d616732ea4755672daa0463520e7a6562e3",
+  "decision_snapshot_sha256": "d8fa8d2353375f9f96a8eafeed37964fb265b6909facd4b292b394f357df6ea6",
+  "validation_labels_opened_before_decision": false
+}

@@ -265,7 +265,10 @@ def evaluate_pool(
     for budget in range(0, len(measured) + 1, batch_size):
         support = measured.iloc[:budget].copy()
         train = base if support.empty else pd.concat([base, support], ignore_index=True)
-        model = fit_delay(train, seed + budget * 17, n_estimators)
+        # Hold estimator randomness fixed within a pool so that the
+        # prediction-change diagnostic reflects newly acquired SPICE support
+        # rather than a different random forest realization at each budget.
+        model = fit_delay(train, seed, n_estimators)
         prediction = model.predict(target[FEATURES])
         variant_r2 = []
         for variant in variants:
@@ -318,7 +321,7 @@ def evaluate_pool(
             batch = measured.iloc[budget - batch_size : budget]
             prior_support = measured.iloc[: budget - batch_size]
             prior_train = base if prior_support.empty else pd.concat([base, prior_support], ignore_index=True)
-            prior_model = fit_delay(prior_train, seed + (budget - batch_size) * 17, n_estimators)
+            prior_model = fit_delay(prior_train, seed, n_estimators)
             batch_pred = prior_model.predict(batch[FEATURES])
             prequential_nmae = float(
                 mean_absolute_error(batch["delay_avg_ns"], batch_pred) / robust_scale(prior_train["delay_avg_ns"])
@@ -380,6 +383,7 @@ def write_summary(trajectory: pd.DataFrame, outdir: Path) -> None:
         "candidate_pool_size": 96,
         "acquisition": "cell-variant-balanced farthest-first space coverage",
         "validation_labels_visible_to_acquisition": False,
+        "estimator_random_state_policy": "fixed to the pool seed at every support budget",
         "full_reference": "all 96 candidate netlists measured with ngspice",
         "development_seeds_for_stopping": [0, 1, 2],
         "locked_confirmation_seeds_for_stopping": [3, 4],

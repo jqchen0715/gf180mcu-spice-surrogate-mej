@@ -1,0 +1,3 @@
+pdk,pools,early_stopped_pools,median_decision_budget,calls_avoided,gap_le_0p02_successes,maximum_gap_to_full,median_delay_r2,median_worst_family_r2,median_worst_variant_r2
+GF180MCU,3,2,80.0,32,3,0.01542576231408277,0.9182296881580206,0.683754066798677,0.42582500088427233
+SKY130,3,2,80.0,32,3,0.019037766000692846,0.878459559776605,0.6474568351323837,0.32488978458305107

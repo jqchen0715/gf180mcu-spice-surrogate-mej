@@ -12,4 +12,4 @@ The rule uses only prequential delay error, model prediction change, and feature
 - Median query reduction: 8.3%.
 - Gap <= 0.02 success rate: 0.833.
 - Median gap to full reference: 0.0000.
-- Maximum gap to full reference: 0.0207.
+- Maximum gap to full reference: 0.0226.

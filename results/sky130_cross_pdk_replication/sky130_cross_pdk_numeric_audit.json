@@ -20,6 +20,7 @@
   "failed_checks": [],
   "publication_sky130_spice_calls": 2592,
   "complete_study_spice_calls_after_sky130": 10093,
+  "complete_study_spice_calls_after_prospective_confirmation": 10669,
   "sky130_primitive_commit": "403964dc7f9cca5ec1a8cc7b4f2a6f532b781676",
   "sky130_standard_cell_commit": "9cb2d7cb8ed4619094263614039a61b6b2d22a88",
   "ngspice_version": "46",
@@ -33,10 +34,10 @@
     "gap_le_0p02_rate": 1.0,
     "gap_le_0p05_rate": 1.0,
     "median_delay_r2_gap_to_full": 0.0,
-    "maximum_delay_r2_gap_to_full": 0.014627163482930583,
-    "median_delay_r2": 0.9085547609759672,
-    "median_worst_family_delay_r2": 0.7235232119276641,
-    "median_worst_variant_delay_r2": 0.1227883443753629
+    "maximum_delay_r2_gap_to_full": 0.010960277886677305,
+    "median_delay_r2": 0.9031895454559776,
+    "median_worst_family_delay_r2": 0.7003664303148774,
+    "median_worst_variant_delay_r2": 0.1710017296816112
   },
   "sampled_ranges": {
     "Vdd": {

@@ -1,0 +1,11 @@
+{
+  "reference_completed_at_utc": "2026-07-18T06:08:24.636224+00:00",
+  "decision_record_sha256": "e81aa23f6076b9d5e8942489949430218be91740edf77bbe34e04c771b6d14b8",
+  "measured_pool_96_sha256": "49d533e5fea36ab3d0adcaac0fe6f6ff87fc98a2f369f020203b035a2cb5c668",
+  "post_decision_calls": 16,
+  "manifest_source_hashes_preserved": {
+    "experiments/prospective_locked_rule_confirmation.py": "27235d459b40871699b2efd0c37810d7b62900954705a3cfa5910a2a4e90bd99",
+    "experiments/library_online_external_validation.py": "7e845c751f56fad508455434b01e6fd9e2b20316a0fa698a1ba72a9bb3b41e25",
+    "spice_v2/sky130_library_cells.py": "5f2c3c391f43edc757377aa25f2b78a8c28eea72a110908d24d803fd82e12cc8"
+  }
+}

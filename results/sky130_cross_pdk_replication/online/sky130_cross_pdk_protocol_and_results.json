@@ -42,34 +42,34 @@
       "gap_le_0p02_rate": 1.0,
       "gap_le_0p05_rate": 1.0,
       "median_delay_r2_gap_to_full": 0.0,
-      "maximum_delay_r2_gap_to_full": 0.014627163482930583,
-      "median_delay_r2": 0.9085547609759672,
-      "median_worst_family_delay_r2": 0.7235232119276641,
-      "median_worst_variant_delay_r2": 0.1227883443753629
+      "maximum_delay_r2_gap_to_full": 0.010960277886677305,
+      "median_delay_r2": 0.9031895454559776,
+      "median_worst_family_delay_r2": 0.7003664303148774,
+      "median_worst_variant_delay_r2": 0.1710017296816112
     },
     "fixed_48": {
       "runs": 15,
       "median_stop_budget": 48.0,
       "median_query_reduction_pct": 50.0,
-      "gap_le_0p02_rate": 0.06666666666666667,
+      "gap_le_0p02_rate": 0.13333333333333333,
       "gap_le_0p05_rate": 0.6666666666666666,
-      "median_delay_r2_gap_to_full": 0.035287424940636525,
-      "maximum_delay_r2_gap_to_full": 0.15156594984331428,
-      "median_delay_r2": 0.8547011068332309,
-      "median_worst_family_delay_r2": 0.5663896637954895,
-      "median_worst_variant_delay_r2": -0.16818404898801087
+      "median_delay_r2_gap_to_full": 0.03653078788082986,
+      "maximum_delay_r2_gap_to_full": 0.14913030944543193,
+      "median_delay_r2": 0.8531077949820466,
+      "median_worst_family_delay_r2": 0.6047164838896735,
+      "median_worst_variant_delay_r2": -0.1728889815871979
     },
     "fixed_64": {
       "runs": 15,
       "median_stop_budget": 64.0,
       "median_query_reduction_pct": 33.333333333333336,
-      "gap_le_0p02_rate": 0.4,
+      "gap_le_0p02_rate": 0.3333333333333333,
       "gap_le_0p05_rate": 0.8666666666666667,
-      "median_delay_r2_gap_to_full": 0.02268436559997289,
-      "maximum_delay_r2_gap_to_full": 0.09450536217234662,
-      "median_delay_r2": 0.8771566963735463,
-      "median_worst_family_delay_r2": 0.6585992497236489,
-      "median_worst_variant_delay_r2": -0.038645141353002455
+      "median_delay_r2_gap_to_full": 0.021623340069434782,
+      "maximum_delay_r2_gap_to_full": 0.09431461807817332,
+      "median_delay_r2": 0.872910571459097,
+      "median_worst_family_delay_r2": 0.65212395080839,
+      "median_worst_variant_delay_r2": -0.07915609711434701
     }
   }
 }

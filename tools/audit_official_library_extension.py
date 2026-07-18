@@ -56,17 +56,17 @@ def main() -> int:
         raise AssertionError("Measured online pool count, row count, or status changed")
     lines.append("- PASS: 15 measured pools contain 1440 successful fresh SPICE calls.")
 
-    for budget, expected in {0: 0.2171, 32: 0.8258, 48: 0.8684, 80: 0.9028, 96: 0.9070}.items():
+    for budget, expected in {0: 0.2171, 32: 0.8217, 48: 0.8633, 80: 0.8967, 96: 0.9097}.items():
         lines.append(close(f"released-CDL median delay R2 at budget {budget}", pooled.loc[budget, "median_delay_r2"], expected))
-    lines.append(close("released-CDL median worst-family R2 at budget 48", pooled.loc[48, "median_worst_family_r2"], 0.3818))
-    lines.append(close("released-CDL median worst-family R2 at budget 96", pooled.loc[96, "median_worst_family_r2"], 0.6932))
+    lines.append(close("released-CDL median worst-family R2 at budget 48", pooled.loc[48, "median_worst_family_r2"], 0.3722))
+    lines.append(close("released-CDL median worst-family R2 at budget 96", pooled.loc[96, "median_worst_family_r2"], 0.7196))
 
     locked = stopping.loc["locked_rule"]
     lines.append(close("confirmation median stop budget", locked["median_stop_budget"], 88.0))
-    lines.append(close("confirmation maximum gap", locked["maximum_delay_r2_gap_to_full"], 0.0207))
+    lines.append(close("confirmation maximum gap", locked["maximum_delay_r2_gap_to_full"], 0.0226))
     lines.append(close("confirmation gap <= 0.02 rate", locked["gap_le_0p02_rate"], 5 / 6))
     lines.append(close("confirmation gap <= 0.05 rate", locked["gap_le_0p05_rate"], 1.0))
-    lines.append(close("confirmation median worst-family R2", locked["median_worst_family_delay_r2"], 0.7348))
+    lines.append(close("confirmation median worst-family R2", locked["median_worst_family_delay_r2"], 0.7389))
 
     if int(liberty_all["points"]) != 432:
         raise AssertionError("Liberty point count changed")
@@ -79,10 +79,10 @@ def main() -> int:
     for value, name in [
         ("1440", "online call count"),
         ("0.2171", "zero-support external result"),
-        ("0.8684", "48-query external result"),
-        ("0.9070", "full external result"),
-        ("0.0207", "maximum stopping gap"),
-        ("0.7348", "stopped worst-family result"),
+        ("0.8633", "48-query external result"),
+        ("0.9097", "full external result"),
+        ("0.0226", "maximum stopping gap"),
+        ("0.7389", "stopped worst-family result"),
         ("0.9900", "Liberty rank correlation"),
         ("18.58\\%", "Liberty absolute-error boundary"),
     ]:

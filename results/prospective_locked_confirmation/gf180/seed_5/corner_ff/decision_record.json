@@ -1,0 +1,23 @@
+{
+  "decision_written_at_utc": "2026-07-18T06:01:23.317853+00:00",
+  "pdk": "GF180MCU",
+  "seed": 5,
+  "heldout_corner": "ff",
+  "decision_budget": 80,
+  "decision_type": "two_consecutive_eligible_batches",
+  "latest_observables": {
+    "prequential_delay_nmae": 0.13856253238293814,
+    "prediction_change_nmae": 0.012423590908478128,
+    "coverage_radius_ratio": 0.3878340583169538
+  },
+  "locked_rule": {
+    "minimum_budget": 64,
+    "prequential_nmae_threshold": 0.25,
+    "prediction_change_threshold": 0.05,
+    "coverage_ratio_threshold": 0.5
+  },
+  "precommit_manifest_sha256": "ffacd80dbcffe90fa0ceda6bfd86dc98f8f4af568a887d83449b83e6550505ec",
+  "candidate_features_sha256": "6aa2351c213bfa6341a09a98a7a9a9a6c70255edc2e7e84199c83b4104416568",
+  "decision_snapshot_sha256": "8f28c190249a2cd25959ef7a9757ad5903696d24f49d3f843899f602404ea4a9",
+  "validation_labels_opened_before_decision": false
+}

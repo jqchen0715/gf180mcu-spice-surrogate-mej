@@ -1,5 +1,5 @@
-- Fresh ngspice queries replace retrospective labels in corner calibration.
-- Released CDLs test eight logic families at two drive strengths.
-- A validation-blind stopping rule is confirmed on six untouched pools.
-- Five of six stops stay within 0.02 R2; all remain within 0.05.
-- SPICE and official Liberty delays preserve rank order (rho = 0.990).
+- A validation-blind SPICE stopping rule was locked on GF180MCU data.
+- The unchanged rule met the pooled 0.02 R2-gap limit in 15/15 SKY130 pools.
+- Six prospective pools wrote hashed decisions before reference completion.
+- Early-stop outcomes are reported separately from full-budget fallbacks.
+- Per-variant and tail audits bound the claim beyond pooled accuracy.

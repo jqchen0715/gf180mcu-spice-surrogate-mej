@@ -1,0 +1,28 @@
+# Rebuilt Manuscript Numeric Audit
+
+- PASS: GF confirmation success rate = 0.833333.
+- PASS: GF early-stop success rate = 0.666667.
+- PASS: SKY130 completed-pool success rate = 1.
+- PASS: SKY130 early-stop success rate = 1.
+- PASS: GF exact lower interval = 0.358765.
+- PASS: SKY130 exact lower interval = 0.781981.
+- PASS: prospective confirmation contains six successful pools, four 80-call stops, and two 96-call fallbacks.
+- PASS: prospective maximum gap = 0.0190378.
+- PASS: all six decision-snapshot hashes, row counts, and validation-visibility flags revalidate.
+- PASS: GF180MCU completed median delay_mae_ns = 0.540077.
+- PASS: GF180MCU completed median delay_p95_absolute_error_ns = 1.7026.
+- PASS: SKY130 completed median delay_mae_ns = 0.209887.
+- PASS: SKY130 completed median delay_p95_absolute_error_ns = 0.578527.
+- PASS: GF180MCU prospective median delay_p95_absolute_error_ns = 1.79567.
+- PASS: SKY130 prospective median delay_p95_absolute_error_ns = 0.578914.
+- PASS: 238 of 400 development-grid rules meet the prespecified constraints.
+- PASS: component-level call counts sum to 10,669: `{'controlled_primary': 320, 'controlled_validation': 480, 'controlled_online': 3600, 'controlled_completion': 77, 'gf_primary': 576, 'gf_validation': 576, 'gf_online': 1440, 'gf_liberty': 432, 'sky_primary': 576, 'sky_validation': 576, 'sky_online': 1440, 'prospective': 576}`.
+- PASS: reframed title appears as `A Validation-Blind Simulator-in-the-Loop Stopping Protocol`.
+- PASS: conditional early-stop results appears as `2/3 and 8/8`.
+- PASS: prospective maximum gap appears as `maximum gap 0.0190`.
+- PASS: complete call count appears as `10,669-call`.
+- PASS: threshold-grid count appears as `238 meet`.
+- PASS: GF worst-variant disclosure appears as `$R^2=-0.512$`.
+- PASS: SKY130 narrow-range failure disclosure appears as `$-4.04$`.
+- PASS: estimator random state is fixed to the pool seed across support budgets.
+- PASS: compiled manuscript PDF exists (656403 bytes).

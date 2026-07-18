@@ -85,6 +85,7 @@ def main() -> int:
         "failed_checks": failed,
         "publication_sky130_spice_calls": 2592,
         "complete_study_spice_calls_after_sky130": 10093,
+        "complete_study_spice_calls_after_prospective_confirmation": 10669,
         "sky130_primitive_commit": installed_or_expected_commit(
             ROOT / "sky130-pdk/libraries/sky130_fd_pr/latest", EXPECTED_PRIMITIVE_COMMIT
         ),
@@ -118,7 +119,8 @@ def main() -> int:
         f"- Independent validation dataset: {len(validation)} successful rows.",
         f"- Online external-replication calls: {len(measured)} successful rows in {len(measured_files)} pools.",
         "- SKY130 publication evidence added: 2,592 SPICE calls.",
-        "- Complete two-PDK evidence package: 10,093 SPICE calls.",
+        "- Completed-pool evidence package: 10,093 SPICE calls.",
+        "- Package after six prospective pools: 10,669 SPICE calls.",
         "",
         "## Locked-rule result",
         "",

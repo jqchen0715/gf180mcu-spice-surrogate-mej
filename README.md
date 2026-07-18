@@ -1,10 +1,10 @@
-# Cross-PDK SPICE Protocol Reproducibility Package
+# Validation-Blind SPICE Stopping Protocol Reproducibility Package
 
 This repository contains the data, scripts, result summaries, generated figures,
 and provenance notes supporting the deterministic simulator-in-the-loop manuscript:
 
-**Cross-PDK Validation of a Deterministic Simulator-in-the-Loop Protocol for
-Standard-Cell Corner Calibration**
+**A Validation-Blind Simulator-in-the-Loop Stopping Protocol for Standard-Cell
+Delay Calibration Across Two Open PDKs**
 
 The study targets early design-space exploration using controlled GF180MCU
 topologies and released GF180MCU and SKY130 standard-cell netlists in ngspice.
@@ -29,9 +29,10 @@ results/online_spice_deterministic/
 
 They contain 3600 successful online ngspice query records, validation-blind
 budget trajectories, paired tests, repeated-query consistency checks, and 15
-measured 96-point exhaustive references. Release `v0.5.0` retains the
+measured 96-point exhaustive references. Release `v0.6.0` retains these
 structured records together with the per-query netlists and ngspice logs listed
-in `DETERMINISTIC_ONLINE_REPRODUCIBILITY.md`.
+in `DETERMINISTIC_ONLINE_REPRODUCIBILITY.md`, as well as the prospective
+confirmation artifacts described below.
 
 The released-library external validation is under:
 
@@ -60,6 +61,29 @@ GF180MCU before these outcomes were evaluated. Without threshold retuning, all
 budget of 80 rather than 96 calls. The minimal 35 MB sparse-PDK installation,
 exact commits, commands, and claim boundaries are documented in
 `SKY130_CROSS_PDK_REPRODUCIBILITY.md`.
+
+The prepared revision adds a chronological confirmation stage under:
+
+```text
+results/prospective_locked_confirmation/
+```
+
+It contains six new seed-5 pools (three corners per PDK), 576 successful calls,
+precommit manifests, decision records, hashed decision snapshots, post-decision
+reference completion, and independent-validation trajectories. Four pools stop
+at 80 calls before reference completion and two fall back to 96; all six remain
+within a pooled delay-R2 gap of 0.02. Exact commands and artifact semantics are
+documented in `PROSPECTIVE_CONFIRMATION_REPRODUCIBILITY.md`.
+
+Reviewer-facing robustness outputs are under:
+
+```text
+results/revision_risk_audit/
+```
+
+They include fixed-random-state trajectories, conditional early-stop and
+fallback summaries, exact intervals, a stopping-signal ablation, the 400-rule
+threshold grid, per-variant and P95 errors, ranking metrics, and a cost ledger.
 
 The current manuscript and numeric audit are:
 
@@ -92,6 +116,8 @@ experiments/
   generate_sky130_library_spice_datasets.py
   sky130_cross_pdk_protocol_replication.py
   audit_sky130_cross_pdk_replication.py
+  prospective_locked_rule_confirmation.py
+  revision_risk_audit.py
   plot_cross_pdk_replication.py
   sci_revision_enhanced_evaluation.py
   v2_baseline_transfer.py
@@ -106,6 +132,8 @@ results/
   online_spice_deterministic/
   gf180_library_external_validation/
   sky130_cross_pdk_replication/
+  prospective_locked_confirmation/
+  revision_risk_audit/
   deterministic_sci_revision/
   deterministic_v3_scale_validation/
   deterministic_robustness/
@@ -142,6 +170,8 @@ spice_v2/
 tools/
   install_sky130_minimal.sh
   audit_deterministic_online_manuscript.py
+  audit_official_library_extension.py
+  audit_revision_manuscript.py
   check_manuscript_numbers.py
 
 manuscript_audits/
@@ -171,6 +201,7 @@ Run the current publication-facing numeric audit from the repository root:
 python tools/audit_deterministic_online_manuscript.py
 python tools/audit_official_library_extension.py
 python experiments/audit_sky130_cross_pdk_replication.py
+python tools/audit_revision_manuscript.py
 ```
 
 For the deterministic data-generation and simulator-in-the-loop commands, see:
@@ -179,6 +210,7 @@ For the deterministic data-generation and simulator-in-the-loop commands, see:
 DETERMINISTIC_ONLINE_REPRODUCIBILITY.md
 RELEASED_LIBRARY_REPRODUCIBILITY.md
 SKY130_CROSS_PDK_REPRODUCIBILITY.md
+PROSPECTIVE_CONFIRMATION_REPRODUCIBILITY.md
 ```
 
 ## Legacy Package Note
@@ -196,14 +228,17 @@ for the deterministic online extension.
 
 ## Citation
 
-The complete cross-PDK `v0.5.0` package is archived at:
+The complete cross-PDK `v0.6.0` package, including the prospective confirmation,
+is archived at:
 
 ```text
-https://doi.org/10.5281/zenodo.21415175
+https://doi.org/10.5281/zenodo.21425560
 ```
 
-DOI `10.5281/zenodo.20524583` identifies the earlier `v0.1.0` static-table
-package. Use the version-specific DOI above when citing the present release.
+DOI `10.5281/zenodo.21415175` identifies the preceding completed-pool
+`v0.5.0` package, while DOI `10.5281/zenodo.20524583` identifies the earlier
+`v0.1.0` static-table package. Use the version-specific DOI above when citing
+the present release.
 
 The live GitHub repository is:
 

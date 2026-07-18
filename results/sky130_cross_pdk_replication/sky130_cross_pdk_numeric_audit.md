@@ -8,14 +8,15 @@ Overall status: **PASS**.
 - Independent validation dataset: 576 successful rows.
 - Online external-replication calls: 1440 successful rows in 15 pools.
 - SKY130 publication evidence added: 2,592 SPICE calls.
-- Complete two-PDK evidence package: 10,093 SPICE calls.
+- Completed-pool evidence package: 10,093 SPICE calls.
+- Package after six prospective pools: 10,669 SPICE calls.
 
 ## Locked-rule result
 
 - Median stop budget: 80/96.
 - Median query reduction: 16.7%.
 - Runs within 0.02: 15/15.
-- Maximum delay R2 gap: 0.014627.
+- Maximum delay R2 gap: 0.010960.
 
 ## Checks
 

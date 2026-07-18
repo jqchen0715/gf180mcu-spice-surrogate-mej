@@ -13,6 +13,7 @@
   "candidate_pool_size": 96,
   "acquisition": "cell-variant-balanced farthest-first space coverage",
   "validation_labels_visible_to_acquisition": false,
+  "estimator_random_state_policy": "fixed to the pool seed at every support budget",
   "full_reference": "all 96 candidate netlists measured with ngspice",
   "development_seeds_for_stopping": [
     0,

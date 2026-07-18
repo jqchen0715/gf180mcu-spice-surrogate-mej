@@ -1,0 +1,25 @@
+{
+  "committed_at_utc": "2026-07-18T06:02:36.583946+00:00",
+  "study_role": "prospective sequential confirmation after threshold lock",
+  "pdk": "SKY130",
+  "seed": 5,
+  "heldout_corner": "ff",
+  "locked_rule": {
+    "minimum_budget": 64,
+    "prequential_nmae_threshold": 0.25,
+    "prediction_change_threshold": 0.05,
+    "coverage_ratio_threshold": 0.5
+  },
+  "two_consecutive_eligible_batches_required": true,
+  "candidate_pool_size": 96,
+  "batch_size": 16,
+  "estimator_random_state": 5,
+  "source_sha256": {
+    "experiments/prospective_locked_rule_confirmation.py": "27235d459b40871699b2efd0c37810d7b62900954705a3cfa5910a2a4e90bd99",
+    "experiments/library_online_external_validation.py": "7e845c751f56fad508455434b01e6fd9e2b20316a0fa698a1ba72a9bb3b41e25",
+    "spice_v2/sky130_library_cells.py": "5f2c3c391f43edc757377aa25f2b78a8c28eea72a110908d24d803fd82e12cc8"
+  },
+  "primary_training_data_sha256": "9d486051a2827c96b355246d0f3d377bdd12bb5a1a52d9ac55ef7ae37dd5df0f",
+  "validation_path_declared_but_not_opened_before_decision": "results/sky130_cross_pdk_replication/validation/sky130_library_validation.csv",
+  "python": "3.10.10"
+}
