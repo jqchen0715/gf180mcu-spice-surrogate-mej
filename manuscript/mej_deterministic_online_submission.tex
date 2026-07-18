@@ -92,9 +92,9 @@ The numerical inputs are NMOS width $W_n$, channel length $L$, PMOS/NMOS width r
 \begin{equation}
 d=\frac{t_{\mathrm{PHL}}+t_{\mathrm{PLH}}}{2},
 \end{equation}
-and average switching supply power over the defined transient measurement window. Numerical features are standardized and categorical features are one-hot encoded with unknown-category-safe handling.
+and average switching supply power over the defined transient measurement window. Numerical features are standardized and categorical features are one-hot encoded with unknown-category-safe handling. The controlled experiment assigns each simulated point one of four non-overlapping data roles. Table~\ref{tab:protocol} lists their sizes, label-access rules, sampling functions, and retained provenance.
 
-\begin{table}[t]
+\begin{table}[H]
 \centering
 \caption{Controlled-stage deterministic datasets and simulator-in-the-loop protocol.}
 \label{tab:protocol}
@@ -150,7 +150,7 @@ As a separate engineering check, released Liberty delay surfaces are compared wi
 
 \subsection{Held-out-corner task}
 
-For a held-out corner $c$, the base set contains only primary rows from the other two corners. A new candidate pool contains 24 Latin-hypercube points per cell, or 96 points in total, all assigned to $c$. Acquisition initially receives only their input features. When a point is selected, the program writes its transistor-level netlist, launches ngspice, parses delay and power, appends the measured row to the support set, and retrains the surrogate. Validation rows from corner $c$ are then used to record the budget trajectory, but their labels are not passed to acquisition or stopping logic. Figure~\ref{fig:workflow} summarizes this separation and the subsequent locked-rule confirmation and cross-PDK replication sequence.
+For a held-out corner $c$, the base set contains only primary rows from the other two corners. A new candidate pool contains 24 Latin-hypercube points per cell, or 96 points in total, all assigned to $c$. Acquisition initially receives only their input features. When a point is selected, the program writes its transistor-level netlist, launches ngspice, parses delay and power, appends the measured row to the support set, and retrains the surrogate. Validation rows from corner $c$ are then used to record the budget trajectory, but their labels are not passed to acquisition or stopping logic. This information boundary is central to the simulation-saving claim. Fig.~\ref{fig:workflow} traces the label flow and the subsequent locked-rule confirmation and cross-PDK replication sequence.
 
 \begin{figure}[H]
 \centering
@@ -195,7 +195,7 @@ As a secondary same-flow sanity check, models trained on all 320 primary rows ge
 
 Without same-corner support, the cell-balanced space-filling trajectory has pooled median delay $R^2=0.4825$ over the 15 seed-corner pairs. The corner dependence is substantial: median zero-support $R^2$ is 0.3055 for ff, 0.4825 for ss, and 0.7877 for typical. This confirms that a strong random-split or same-flow validation score does not justify zero-shot use at an absent corner.
 
-Fresh same-corner SPICE labels improve the difficult corners. At 24 queries, median delay $R^2$ reaches 0.7763 for ff, 0.8035 for ss, and 0.8896 for typical. At 48 queries, the values are 0.8797, 0.8488, and 0.8887. The pooled worst-cell delay $R^2$ rises from 0.3112 without support to 0.6785 at 24 queries and 0.7885 at 48 queries. Power changes little because its zero-support transfer is already strong: pooled median power $R^2$ is 0.9455 at zero support and 0.9465 at 48 queries.
+Fresh same-corner SPICE labels improve the difficult corners. At 24 queries, median delay $R^2$ reaches 0.7763 for ff, 0.8035 for ss, and 0.8896 for typical. At 48 queries, the values are 0.8797, 0.8488, and 0.8887. The pooled worst-cell delay $R^2$ rises from 0.3112 without support to 0.6785 at 24 queries and 0.7885 at 48 queries. Power changes little because its zero-support transfer is already strong: pooled median power $R^2$ is 0.9455 at zero support and 0.9465 at 48 queries. Table~\ref{tab:corner-results} resolves these trends by held-out corner and compares each support budget with its measured 96-query reference and simulation time.
 
 \begin{table}[t]
 \centering
@@ -226,11 +226,11 @@ Corner & Support & Delay $R^2$ & Worst-cell delay $R^2$ & Top-20\% recall & Meas
 
 \subsection{Space coverage is safer than uncertainty-only acquisition}
 
-Figure~\ref{fig:online-results}a--c compares budget trajectories. At 24 queries, cell-balanced space filling has pooled median delay $R^2=0.8119$, compared with 0.7625 for random, 0.7812 for cell-balanced random, 0.8114 for ordinary space filling, and 0.7232 for uncertainty-only selection. The difference from uncertainty-only selection remains significant after Holm correction ($p=0.0171$). The difference from random is positive but does not cross the corrected 0.05 threshold ($p=0.0646$).
+To separate acquisition-policy effects from the benefit of support volume alone, Fig.~\ref{fig:online-results}(a--c) compares matched budget trajectories. At 24 queries, cell-balanced space filling has pooled median delay $R^2=0.8119$, compared with 0.7625 for random, 0.7812 for cell-balanced random, 0.8114 for ordinary space filling, and 0.7232 for uncertainty-only selection. The difference from uncertainty-only selection remains significant after Holm correction ($p=0.0171$). The difference from random is positive but does not cross the corrected 0.05 threshold ($p=0.0646$).
 
 At 48 queries, the respective medians are 0.8729, 0.8564, 0.8685, 0.8674, and 0.8111. Cell-balanced space filling exceeds random ($p=0.0374$) and uncertainty-only selection ($p=0.0334$) after correction. It is statistically indistinguishable from cell-balanced random and ordinary space filling ($p=1.0$ for both corrected comparisons). The worst-cell advantage over random is not significant after correction ($p=0.1414$). These tests support a restrained conclusion: covering the new corner is safer than relying only on ensemble disagreement, while the present data do not demonstrate superiority over all space-filling alternatives.
 
-Cell balance is nevertheless operationally explicit. Its support-count range is zero at every complete four-query batch. At 48 queries, the median range is four points for random, ordinary space filling, and uncertainty-only selection. This property prevents one cell from consuming most of a small support budget even when aggregate accuracy appears acceptable.
+Cell balance is nevertheless operationally explicit. Its support-count range is zero at every complete four-query batch. At 48 queries, the median range is four points for random, ordinary space filling, and uncertainty-only selection. This property prevents one cell from consuming most of a small support budget even when aggregate accuracy appears acceptable. Fig.~\ref{fig:online-results}(d) then places the selected 24- and 48-query budgets against the distribution of measured 96-query references.
 
 \begin{figure}[H]
 \centering
@@ -243,7 +243,7 @@ Cell balance is nevertheless operationally explicit. Its support-count range is 
 
 Completing every candidate produces 15 measured 96-query references, one for each seed-corner pool. Their pooled median delay $R^2$ is 0.8824, median worst-cell delay $R^2$ is 0.8150, and median top-20\% recall is 0.9375. With 24 queries, cell-balanced space filling uses 75\% fewer calls and 75.7\% less measured time; median delay $R^2$ is 0.8119 and the median gap to the reference is 0.0798. With 48 queries, call reduction is 50\%, time reduction is 51.3\%, median delay $R^2$ is 0.8729, and the median gap is 0.0120.
 
-The 48-query budget also preserves the reference median top-20\% recall of 0.9375. Its median worst-cell delay $R^2$ is 0.7885, compared with 0.8150 for the reference. These results quantify the engineering trade-off directly: half of the candidate simulations retain most of the measured support benefit, whereas one quarter of the pool is useful but leaves a larger accuracy gap.
+The 48-query budget also preserves the reference median top-20\% recall of 0.9375. Its median worst-cell delay $R^2$ is 0.7885, compared with 0.8150 for the reference. These results quantify the engineering trade-off directly: half of the candidate simulations retain most of the measured support benefit, whereas one quarter of the pool is useful but leaves a larger accuracy gap. Table~\ref{tab:exhaustive} consolidates the resulting call, time, accuracy, and ranking-recall trade-offs.
 
 \begin{table}[t]
 \centering
@@ -267,7 +267,7 @@ For each four-query batch, predictions are recorded before its SPICE labels are 
 
 \subsection{The protocol transfers to released standard-cell CDLs}
 
-All 1152 independently generated released-CDL rows and all 1440 online candidate simulations complete successfully with the statistical switches disabled. The released-library task is materially harder than the controlled four-topology stage. Across 15 seed-corner pools, median delay $R^2$ is 0.2171 without target-corner support, 0.8258 at 32 queries, 0.8684 at 48, 0.9028 at 80, and 0.9070 after all 96 candidates are measured. Median worst-family $R^2$ rises from $-0.1009$ at zero support to 0.3818 at 48 and 0.6932 at 96. Table~\ref{tab:released-budgets} and Fig.~\ref{fig:released-validation}a show the complete trajectory.
+All 1152 independently generated released-CDL rows and all 1440 online candidate simulations complete successfully with the statistical switches disabled. The released-library task is materially harder than the controlled four-topology stage. Across 15 seed-corner pools, median delay $R^2$ is 0.2171 without target-corner support, 0.8258 at 32 queries, 0.8684 at 48, 0.9028 at 80, and 0.9070 after all 96 candidates are measured. Median worst-family $R^2$ rises from $-0.1009$ at zero support to 0.3818 at 48 and 0.6932 at 96. Table~\ref{tab:released-budgets} reports the pooled budget trade-off, while Fig.~\ref{fig:released-validation}(a) resolves the trajectory by held-out corner.
 
 \begin{table}[t]
 \centering
@@ -287,9 +287,9 @@ Support & Delay $R^2$ & Gap to reference & Worst-family $R^2$ & Measured time (s
 \end{tabular}}
 \end{table}
 
-This transfer test changes the interpretation of the controlled result. A fixed 48-query budget is within 0.02 of the reference in only one of six untouched confirmation pools; its median gap is 0.0427 and maximum gap is 0.1219. The validation-blind rule instead stops at a median of 88 queries. Five of six confirmation runs are within 0.02, all six are within 0.05, and the maximum gap is 0.0207. The corresponding median delay $R^2$ is 0.9036 and median worst-family $R^2$ is 0.7348. Thus, the stopping rule is conservative and yields a median query reduction of only 8.3\%, but it avoids presenting the successful controlled-stage half-budget as a universal constant (Fig.~\ref{fig:released-validation}b).
+This transfer test changes the interpretation of the controlled result. A fixed 48-query budget is within 0.02 of the reference in only one of six untouched confirmation pools; its median gap is 0.0427 and maximum gap is 0.1219. The validation-blind rule instead stops at a median of 88 queries. Five of six confirmation runs are within 0.02, all six are within 0.05, and the maximum gap is 0.0207. The corresponding median delay $R^2$ is 0.9036 and median worst-family $R^2$ is 0.7348. Fig.~\ref{fig:released-validation}(b) shows that the rule is conservative, with a median query reduction of only 8.3\%. It nevertheless avoids presenting the successful controlled-stage half-budget as a universal constant.
 
-The 432-point Liberty comparison provides a different form of evidence. Fresh ngspice delay and the released Liberty table values have Spearman $\rho=0.9900$, Pearson $r=0.9916$, and $R^2=0.9460$ (Fig.~\ref{fig:released-validation}c). However, the median absolute percentage error is 18.58\%, and the median SPICE-to-Liberty delay ratio is 0.814. The strong ordering agreement supports use for early ranking, whereas the absolute bias confirms that the present deck is not a replacement for the provider's complete characterization conditions.
+Fig.~\ref{fig:released-validation}(c) tests a different question: whether fresh ngspice simulations preserve the ordering and magnitude of released Liberty delays. Spearman $\rho=0.9900$, Pearson $r=0.9916$, and $R^2=0.9460$ indicate strong agreement in ordering and linear association. However, the median absolute percentage error is 18.58\%, and the median SPICE-to-Liberty delay ratio is 0.814. The ordering agreement supports early ranking, whereas the absolute bias confirms that the present deck does not replace the provider's complete characterization conditions.
 
 \begin{figure}[t]
 \centering
@@ -300,11 +300,11 @@ The 432-point Liberty comparison provides a different form of evidence. Fresh ng
 
 \subsection{The GF180MCU stopping rule transfers to SKY130 without retuning}
 
-The prelocked stopping rule satisfied the primary 0.02-gap criterion in all 15 SKY130 pools (Table~\ref{tab:cross-pdk-stopping}). Its median stop was 80 of 96 calls, corresponding to a 16.7\% median reduction, and its largest delay $R^2$ gap to a measured reference was 0.0146. The median stopped-model delay $R^2$ was 0.9086, and the median worst-family $R^2$ was 0.7235. Seven pools, including all five ss pools, continued to the complete 96-call reference; the rule therefore saved work only when its observable stability and coverage conditions were met.
+The decisive transfer question is whether the GF180MCU-locked rule controls error better than fixed budgets on SKY130. Table~\ref{tab:cross-pdk-stopping} summarizes this matched comparison across both PDKs. The prelocked rule satisfied the primary 0.02-gap criterion in all 15 SKY130 pools. Its median stop was 80 of 96 calls, corresponding to a 16.7\% median reduction, and its largest delay $R^2$ gap to a measured reference was 0.0146. The median stopped-model delay $R^2$ was 0.9086, and the median worst-family $R^2$ was 0.7235. Seven pools, including all five ss pools, continued to the complete 96-call reference; the rule therefore saved work only when its observable stability and coverage conditions were met.
 
-Fixed budgets did not provide the same protection. A 64-call budget met the 0.02 criterion in 6 of 15 SKY130 pools and produced a maximum gap of 0.0945. A 48-call budget met it in only 1 of 15 pools and produced a maximum gap of 0.1516. The same ordering is present in the six untouched GF180MCU confirmation pools: the locked rule succeeds in five, whereas each fixed budget succeeds in one. Figure~\ref{fig:cross-pdk} shows every locked-rule outcome and the matched fixed-budget comparisons. The result supports transfer of the stopping protocol across these two PDKs, but it does not imply that a regressor fitted on GF180MCU directly predicts SKY130 cells.
+Fixed budgets did not provide the same protection. A 64-call budget met the 0.02 criterion in 6 of 15 SKY130 pools and produced a maximum gap of 0.0945. A 48-call budget met it in only 1 of 15 pools and produced a maximum gap of 0.1516. The same ordering is present in the six untouched GF180MCU confirmation pools: the locked rule succeeds in five, whereas each fixed budget succeeds in one. To determine whether the aggregate rates hide corner-specific failures, Fig.~\ref{fig:cross-pdk} shows every locked-rule outcome and the matched fixed-budget comparisons. The result supports transfer of the stopping protocol across these two PDKs, but it does not imply that a regressor fitted on GF180MCU directly predicts SKY130 cells.
 
-\begin{table}[t]
+\begin{table}[H]
 \centering
 \caption{Stopping-rule replication across released GF180MCU and SKY130 standard cells. Success means a delay $R^2$ gap no greater than 0.02 relative to the measured 96-call reference.}
 \label{tab:cross-pdk-stopping}
@@ -323,7 +323,7 @@ SKY130 & Fixed 48 & 15 & 48 & 50.0\% & 1/15 & 0.1516 \\
 \end{tabular}}
 \end{table}
 
-\begin{figure}[t]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/fig4_cross_pdk_replication.pdf}
 \caption{Cross-PDK replication of the validation-blind stopping rule. (a) Individual outcomes for the six untouched GF180MCU confirmation pools and 15 external SKY130 pools. The rule was selected using separate GF180MCU development pools; the dashed line is the prespecified 0.02 delay-$R^2$ gap limit. Negative gaps indicate that an early model slightly outperformed the corresponding 96-call model on the independent validation set. (b) Fraction of pools within the 0.02 limit for the locked rule and fixed 64- and 48-call budgets. (c) Call reduction for each locked-rule outcome; horizontal bars show medians. SKY130 thresholds were not retuned, and all candidate pools were completed to obtain measured references.}
